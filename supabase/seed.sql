@@ -1,0 +1,39 @@
+-- supabase/seed.sql
+-- Local development seed data.
+-- Runs automatically after migrations when you do `supabase db reset`.
+--
+-- NOTE: auth.users rows must be created first via Supabase Auth API or
+-- supabase dashboard; this seed file only populates public.* tables.
+-- For local testing, create a user via the Studio UI (http://localhost:54323)
+-- then replace the UUID below.
+
+-- Uncomment and fill in after creating a local user:
+-- do $$
+-- declare
+--   v_user_id uuid := '<your-local-user-uuid>';
+-- begin
+--
+--   -- Profile is auto-created by handle_new_user trigger.
+--   -- Just update it:
+--   update public.profiles
+--   set username = 'devuser', full_name = 'Dev User'
+--   where id = v_user_id;
+--
+--   -- Sample routines
+--   insert into public.routines (user_id, name, frequency, time_of_day) values
+--     (v_user_id, 'Morning meditation', 'daily', '07:00'),
+--     (v_user_id, 'Evening walk',       'daily', '18:30'),
+--     (v_user_id, 'Read 30 minutes',    'daily', '21:00');
+--
+--   -- Sample routine_logs (last 7 days)
+--   insert into public.routine_logs (routine_id, user_id, completed_at)
+--   select r.id, v_user_id, now() - (s.n || ' days')::interval
+--   from public.routines r
+--   cross join generate_series(0, 6) as s(n)
+--   where r.user_id = v_user_id;
+--
+--   -- Sample project
+--   insert into public.projects (user_id, name, github_url, status)
+--   values (v_user_id, 'trax', 'https://github.com/example/trax', 'active');
+--
+-- end $$;

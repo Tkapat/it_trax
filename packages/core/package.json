@@ -1,0 +1,44 @@
+{
+  "name": "@trax/core",
+  "version": "1.0.0",
+  "description": "Shared core package for trax — types, Supabase client, streak logic, date utils",
+  "license": "MIT",
+  "private": true,
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./supabase": {
+      "types": "./src/supabase/client.ts",
+      "default": "./src/supabase/client.ts"
+    },
+    "./types": {
+      "types": "./src/types/domain.ts",
+      "default": "./src/types/domain.ts"
+    },
+    "./streak": {
+      "types": "./src/streak/calculate.ts",
+      "default": "./src/streak/calculate.ts"
+    },
+    "./dates": {
+      "types": "./src/dates/rollups.ts",
+      "default": "./src/dates/rollups.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "check-types": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@js-temporal/polyfill": "^0.4.4",
+    "@supabase/supabase-js": "^2.50.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "5.9.2",
+    "vitest": "^3.2.4"
+  }
+}
