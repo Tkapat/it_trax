@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { SupabaseProvider } from "./hooks/useSupabase";
 import { AuthProvider, useAuth } from "./hooks/useAuth";
+import { ErrorBoundary } from "./components/ErrorBoundary";
 
 // We'll import these pages next
 import { Layout } from "./components/Layout";
@@ -10,6 +11,9 @@ import { Signup } from "./pages/Signup";
 import { ForgotPassword } from "./pages/ForgotPassword";
 import { Home } from "./pages/Home";
 import { Calendar } from "./pages/Calendar";
+import { Projects } from "./pages/Projects";
+import { ProjectDetail } from "./pages/ProjectDetail";
+import { Tasks } from "./pages/Tasks";
 import { LoadingSpinner } from "./components/LoadingSpinner";
 
 const queryClient = new QueryClient({
@@ -37,7 +41,11 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
     return <Navigate to="/login" replace />;
   }
 
-  return <>{children}</>;
+  return (
+    <ErrorBoundary>
+      {children}
+    </ErrorBoundary>
+  );
 }
 
 // Redirect to home if already logged in
@@ -102,6 +110,9 @@ export default function App() {
               >
                 <Route path="/" element={<Home />} />
                 <Route path="/calendar" element={<Calendar />} />
+                <Route path="/projects" element={<Projects />} />
+                <Route path="/projects/:id" element={<ProjectDetail />} />
+                <Route path="/tasks" element={<Tasks />} />
               </Route>
             </Routes>
           </BrowserRouter>

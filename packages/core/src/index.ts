@@ -60,6 +60,7 @@ export type {
   HeatmapDay,
   TaskWithLatestLog,
   ProjectSummary,
+  GetTodayRoutineRow,
 } from "./types/domain.js";
 
 // Streak calculation

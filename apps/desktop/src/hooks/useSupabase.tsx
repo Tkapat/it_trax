@@ -1,28 +1,50 @@
-import { createContext, useContext, useMemo } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { createSupabaseClient, type TypedSupabaseClient } from "@trax/core";
+import { tauriAuthStorage } from "./supabaseStorage";
+import { LoadingSpinner } from "../components/LoadingSpinner";
 
-// We'll initialize it once globally to avoid recreating it
 let supabaseInstance: TypedSupabaseClient | null = null;
 
 export function getSupabase() {
   if (!supabaseInstance) {
     const url = import.meta.env.VITE_SUPABASE_URL;
     const key = import.meta.env.VITE_SUPABASE_ANON_KEY;
-    
+
     if (!url || !key) {
       console.error("Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY environment variables");
     }
 
-    supabaseInstance = createSupabaseClient(url, key);
+    supabaseInstance = createSupabaseClient(url, key, {
+      auth: {
+        storage: tauriAuthStorage,
+        autoRefreshToken: true,
+        persistSession: true,
+        detectSessionInUrl: false,
+      },
+    });
   }
   return supabaseInstance;
 }
 
-const SupabaseContext = createContext<TypedSupabaseClient | null>(null);
+// undefined = provider missing (developer error).
+// The provider only renders children once the client is ready, so the value
+// is guaranteed to be a real client whenever useSupabase() can observe it.
+const SupabaseContext = createContext<TypedSupabaseClient | undefined>(undefined);
 
 export function SupabaseProvider({ children }: { children: React.ReactNode }) {
   const url = import.meta.env.VITE_SUPABASE_URL;
   const key = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+  const [client, setClient] = useState<TypedSupabaseClient | null>(null);
+
+  useEffect(() => {
+    if (!url || !key) {
+      setClient(null);
+      return;
+    }
+    const instance = getSupabase();
+    setClient(instance);
+  }, [url, key]);
 
   if (!url || !key) {
     return (
@@ -44,7 +66,14 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
     );
   }
 
-  const client = useMemo(() => getSupabase(), []);
+  if (!client) {
+    return (
+      <div className="app-container" style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
   return (
     <SupabaseContext.Provider value={client}>
       {children}
@@ -54,7 +83,7 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
 
 export function useSupabase() {
   const context = useContext(SupabaseContext);
-  if (!context) {
+  if (context === undefined) {
     throw new Error("useSupabase must be used within a SupabaseProvider");
   }
   return context;

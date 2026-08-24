@@ -1,6 +1,6 @@
 import { Outlet, NavLink } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import { CheckCircle2, CalendarDays, LogOut } from "lucide-react";
+import { CheckCircle2, CalendarDays, LogOut, FolderKanban, CheckSquare } from "lucide-react";
 
 export function Layout() {
   const { signOut, user } = useAuth();
@@ -72,6 +72,56 @@ export function Layout() {
               >
                 <CalendarDays size={18} />
                 <span>Calendar</span>
+              </div>
+            )}
+          </NavLink>
+
+          <NavLink
+            to="/projects"
+            className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+            style={{ textDecoration: 'none' }}
+          >
+            {({ isActive }) => (
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  padding: '10px 12px',
+                  borderRadius: 'var(--radius-md)',
+                  color: isActive ? 'var(--accent-color)' : 'var(--text-secondary)',
+                  backgroundColor: isActive ? 'var(--accent-color-dim)' : 'transparent',
+                  transition: 'all var(--transition-fast)',
+                  fontWeight: 500,
+                }}
+              >
+                <FolderKanban size={18} />
+                <span>Projects</span>
+              </div>
+            )}
+          </NavLink>
+
+          <NavLink
+            to="/tasks"
+            className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+            style={{ textDecoration: 'none' }}
+          >
+            {({ isActive }) => (
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  padding: '10px 12px',
+                  borderRadius: 'var(--radius-md)',
+                  color: isActive ? 'var(--accent-color)' : 'var(--text-secondary)',
+                  backgroundColor: isActive ? 'var(--accent-color-dim)' : 'transparent',
+                  transition: 'all var(--transition-fast)',
+                  fontWeight: 500,
+                }}
+              >
+                <CheckSquare size={18} />
+                <span>Tasks</span>
               </div>
             )}
           </NavLink>

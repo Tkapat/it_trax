@@ -17,14 +17,19 @@ export default defineConfig(async () => ({
   server: {
     port: 1420,
     strictPort: true,
-    host: host || false,
+    // Bind to all interfaces so Tauri webview can access the dev server
+    host: host || "0.0.0.0",
     hmr: host
       ? {
           protocol: "ws",
           host,
           port: 1421,
         }
-      : undefined,
+      : {
+          protocol: "ws",
+          host: "localhost",
+          port: 1421,
+        },
     watch: {
       // 3. tell Vite to ignore watching `src-tauri`
       ignored: ["**/src-tauri/**"],

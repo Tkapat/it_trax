@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, useRef } from "react";
 import type { Session, User } from "@trax/core";
 import { useSupabase } from "./useSupabase";
 
@@ -16,25 +16,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const mountedRef = useRef(true);
 
   useEffect(() => {
-    // Initial fetch
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      setIsLoading(false);
-    });
+    mountedRef.current = true;
 
-    // Listen for auth changes
+    // Only rely on onAuthStateChange which fires INITIAL_SESSION
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!mountedRef.current) return;
       setSession(session);
       setUser(session?.user ?? null);
       setIsLoading(false);
     });
 
     return () => {
+      mountedRef.current = false;
       subscription.unsubscribe();
     };
   }, [supabase]);
