@@ -11,10 +11,10 @@ interface ProjectFormProps {
 }
 
 const statusOptions: { value: ProjectStatus; label: string }[] = [
-  { value: "active", label: "Active" },
-  { value: "paused", label: "Paused" },
+  { value: "in_progress", label: "In Progress" },
+  { value: "on_track", label: "On Track" },
+  { value: "at_risk", label: "At Risk" },
   { value: "completed", label: "Completed" },
-  { value: "archived", label: "Archived" },
 ];
 
 export function ProjectForm({ initialData, onSubmit, onClose, loading = false }: ProjectFormProps) {
@@ -22,7 +22,7 @@ export function ProjectForm({ initialData, onSubmit, onClose, loading = false }:
   const [name, setName] = useState(initialData?.name || "");
   const [description, setDescription] = useState(initialData?.description || "");
   const [githubUrl, setGithubUrl] = useState(initialData?.github_url || "");
-  const [status, setStatus] = useState<ProjectStatus>(initialData?.status || "active");
+  const [status, setStatus] = useState<ProjectStatus>(initialData?.status || "in_progress");
   const [errors, setErrors] = useState<Partial<Record<keyof ProjectInsert, string>>>({});
 
   useEffect(() => {

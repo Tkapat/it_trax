@@ -10,17 +10,17 @@ interface ProjectCardProps {
 }
 
 const statusColors: Record<ProjectStatus, string> = {
-  active: "var(--accent-color)",
-  paused: "#f59e0b",
+  in_progress: "var(--accent-color)",
+  on_track: "var(--accent-color)",
+  at_risk: "#f59e0b",
   completed: "#22c55e",
-  archived: "var(--text-tertiary)",
 };
 
 const statusLabels: Record<ProjectStatus, string> = {
-  active: "Active",
-  paused: "Paused",
+  in_progress: "In Progress",
+  on_track: "On Track",
+  at_risk: "At Risk",
   completed: "Completed",
-  archived: "Archived",
 };
 
 export function ProjectCard({ project, onEdit, onDelete, onOpen }: ProjectCardProps) {

@@ -238,6 +238,7 @@ export type Database = {
       project_tasks: {
         Row: {
           created_at: string | null
+          due_date: string | null
           id: string
           is_completed: boolean | null
           name: string
@@ -248,6 +249,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string | null
+          due_date?: string | null
           id?: string
           is_completed?: boolean | null
           name: string
@@ -258,6 +260,7 @@ export type Database = {
         }
         Update: {
           created_at?: string | null
+          due_date?: string | null
           id?: string
           is_completed?: boolean | null
           name?: string
@@ -328,9 +331,11 @@ export type Database = {
           created_at: string
           description: string | null
           github_url: string | null
+          icon: string | null
           id: string
+          is_archived: boolean | null
           name: string
-          status: Database["public"]["Enums"]["project_status"]
+          status: 'in_progress' | 'on_track' | 'at_risk' | 'completed'
           updated_at: string
           user_id: string
         }
@@ -339,9 +344,11 @@ export type Database = {
           created_at?: string
           description?: string | null
           github_url?: string | null
+          icon?: string | null
           id?: string
+          is_archived?: boolean | null
           name: string
-          status?: Database["public"]["Enums"]["project_status"]
+          status?: 'in_progress' | 'on_track' | 'at_risk' | 'completed'
           updated_at?: string
           user_id: string
         }
@@ -350,9 +357,11 @@ export type Database = {
           created_at?: string
           description?: string | null
           github_url?: string | null
+          icon?: string | null
           id?: string
+          is_archived?: boolean | null
           name?: string
-          status?: Database["public"]["Enums"]["project_status"]
+          status?: 'in_progress' | 'on_track' | 'at_risk' | 'completed'
           updated_at?: string
           user_id?: string
         }

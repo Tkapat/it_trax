@@ -19,7 +19,18 @@ export type { Json } from "./database.js";
 export type RoutineFrequency = Database["public"]["Enums"]["routine_frequency"];
 export type TaskPriority     = Database["public"]["Enums"]["task_priority"];
 export type TaskStatus       = Database["public"]["Enums"]["task_status"];
-export type ProjectStatus    = Database["public"]["Enums"]["project_status"];
+export type ProjectStatus    = 'in_progress' | 'on_track' | 'at_risk' | 'completed';
+export type ProjectIcon      =
+  | 'code'
+  | 'book'
+  | 'target'
+  | 'graduation-cap'
+  | 'folder'
+  | 'briefcase'
+  | 'shopping-cart'
+  | 'heart'
+  | 'lightbulb'
+  | 'pen';
 export type TaskAction       = Database["public"]["Enums"]["task_action"];
 
 // ---------------------------------------------------------------------------
