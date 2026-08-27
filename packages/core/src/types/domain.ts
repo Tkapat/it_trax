@@ -55,6 +55,7 @@ export type ReadingSession   = Database["public"]["Tables"]["reading_sessions"][
 export type BookHighlight    = Database["public"]["Tables"]["book_highlights"]["Row"];
 export type ProjectTask      = Database["public"]["Tables"]["project_tasks"]["Row"];
 export type TaskMedia        = Database["public"]["Tables"]["task_media"]["Row"];
+export type ProjectLink      = Database["public"]["Tables"]["project_links"]["Row"];
 export type Todo             = Database["public"]["Tables"]["todos"]["Row"];
 export type Reminder         = Database["public"]["Tables"]["reminders"]["Row"];
 
@@ -80,6 +81,7 @@ export type ReadingSessionInsert   = Database["public"]["Tables"]["reading_sessi
 export type BookHighlightInsert    = Database["public"]["Tables"]["book_highlights"]["Insert"];
 export type ProjectTaskInsert      = Database["public"]["Tables"]["project_tasks"]["Insert"];
 export type TaskMediaInsert        = Database["public"]["Tables"]["task_media"]["Insert"];
+export type ProjectLinkInsert      = Database["public"]["Tables"]["project_links"]["Insert"];
 export type TodoInsert             = Database["public"]["Tables"]["todos"]["Insert"];
 export type ReminderInsert         = Database["public"]["Tables"]["reminders"]["Insert"];
 
@@ -94,6 +96,7 @@ export type TaskUpdate          = Database["public"]["Tables"]["tasks"]["Update"
 export type TaskLogUpdate       = Database["public"]["Tables"]["task_logs"]["Update"];
 export type StreakUpdate        = Database["public"]["Tables"]["streaks"]["Update"];
 export type ProjectRowUpdate    = Database["public"]["Tables"]["projects"]["Update"];
+export type ProjectLinkUpdate   = Database["public"]["Tables"]["project_links"]["Update"];
 export type ProjectUpdateUpdate = Database["public"]["Tables"]["project_updates"]["Update"];
 export type ProjectMediaUpdate  = Database["public"]["Tables"]["project_media"]["Update"];
 

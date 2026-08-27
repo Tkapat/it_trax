@@ -53,6 +53,7 @@ export type {
   StreakUpdate,
   ProjectRowUpdate,
   ProjectUpdateUpdate,
+  ProjectLinkUpdate,
   TableRow,
   TableInsert,
   TableUpdate,
@@ -69,6 +70,7 @@ export type {
   BookHighlight,
   ProjectTask,
   TaskMedia,
+  ProjectLink,
   Todo,
   Reminder,
   RoutineCategoryInsert,
@@ -78,6 +80,7 @@ export type {
   BookHighlightInsert,
   ProjectTaskInsert,
   TaskMediaInsert,
+  ProjectLinkInsert,
   TodoInsert,
   ReminderInsert,
 } from "./types/domain.js";

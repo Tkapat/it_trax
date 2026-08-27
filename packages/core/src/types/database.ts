@@ -190,6 +190,47 @@ export type Database = {
         }
         Relationships: []
       }
+      project_links: {
+        Row: {
+          created_at: string | null
+          favicon_url: string | null
+          id: string
+          position: number | null
+          project_id: string
+          title: string
+          url: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          favicon_url?: string | null
+          id?: string
+          position?: number | null
+          project_id: string
+          title: string
+          url: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          favicon_url?: string | null
+          id?: string
+          position?: number | null
+          project_id?: string
+          title?: string
+          url?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_links_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       project_media: {
         Row: {
           created_at: string
@@ -335,7 +376,10 @@ export type Database = {
           id: string
           is_archived: boolean | null
           name: string
+          repo_url: string | null
+          started_at: string | null
           status: 'in_progress' | 'on_track' | 'at_risk' | 'completed'
+          target_date: string | null
           updated_at: string
           user_id: string
         }
@@ -348,7 +392,10 @@ export type Database = {
           id?: string
           is_archived?: boolean | null
           name: string
+          repo_url?: string | null
+          started_at?: string | null
           status?: 'in_progress' | 'on_track' | 'at_risk' | 'completed'
+          target_date?: string | null
           updated_at?: string
           user_id: string
         }
@@ -361,7 +408,10 @@ export type Database = {
           id?: string
           is_archived?: boolean | null
           name?: string
+          repo_url?: string | null
+          started_at?: string | null
           status?: 'in_progress' | 'on_track' | 'at_risk' | 'completed'
+          target_date?: string | null
           updated_at?: string
           user_id?: string
         }
@@ -679,6 +729,8 @@ export type Database = {
         Row: {
           caption: string | null
           created_at: string | null
+          file_name: string | null
+          file_size_bytes: number | null
           file_type: string | null
           file_url: string
           id: string
@@ -689,6 +741,8 @@ export type Database = {
         Insert: {
           caption?: string | null
           created_at?: string | null
+          file_name?: string | null
+          file_size_bytes?: number | null
           file_type?: string | null
           file_url: string
           id?: string
@@ -699,6 +753,8 @@ export type Database = {
         Update: {
           caption?: string | null
           created_at?: string | null
+          file_name?: string | null
+          file_size_bytes?: number | null
           file_type?: string | null
           file_url?: string
           id?: string
