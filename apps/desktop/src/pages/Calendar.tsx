@@ -93,8 +93,8 @@ export function Calendar() {
               if (ratio > 0) {
                 // If it's a perfect 1 (100%), full cyan. Otherwise scaled opacity.
                 const opacity = ratio === 1 ? 1 : Math.max(0.3, ratio);
-                bg = `rgba(0, 229, 255, ${opacity})`;
-                border = '1px solid rgba(0, 229, 255, 0.5)';
+                bg = `rgba(255, 184, 0, ${opacity})`;
+                border = '1px solid rgba(255, 184, 0, 0.5)';
               }
 
               return (

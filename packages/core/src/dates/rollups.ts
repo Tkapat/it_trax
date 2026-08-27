@@ -273,3 +273,37 @@ export function startOfMonth(timezone: string): string {
 export function todayInTimezone(timezone: string): string {
   return Temporal.Now.plainDateISO(timezone).toString();
 }
+
+// ---------------------------------------------------------------------------
+// Day-window helpers (for log range queries + anchored inserts)
+// ---------------------------------------------------------------------------
+
+/** Start-of-day instant (00:00) for an ISO date in the given timezone. */
+export function dayStartInstant(dateISO: string, timezone: string): string {
+  return Temporal.PlainDate.from(dateISO)
+    .toZonedDateTime({ timeZone: timezone, plainTime: "00:00" })
+    .toInstant()
+    .toString();
+}
+
+/** End-of-day instant (exclusive) for an ISO date in the given timezone. */
+export function dayEndInstant(dateISO: string, timezone: string): string {
+  return Temporal.PlainDate.from(dateISO)
+    .add({ days: 1 })
+    .toZonedDateTime({ timeZone: timezone, plainTime: "00:00" })
+    .toInstant()
+    .toString();
+}
+
+/** Noon instant for an ISO date — used to anchor late log insert into the past day. */
+export function dayNoonInstant(dateISO: string, timezone: string): string {
+  return Temporal.PlainDate.from(dateISO)
+    .toZonedDateTime({ timeZone: timezone, plainTime: "12:00" })
+    .toInstant()
+    .toString();
+}
+
+/** The previous calendar day's ISO date string relative to today in the timezone. */
+export function yesterdayInTimezone(timezone: string): string {
+  return Temporal.Now.plainDateISO(timezone).subtract({ days: 1 }).toString();
+}

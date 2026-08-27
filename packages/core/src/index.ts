@@ -61,10 +61,55 @@ export type {
   TaskWithLatestLog,
   ProjectSummary,
   GetTodayRoutineRow,
+  // v2 tables
+  RoutineCategory,
+  ProjectCategory,
+  Book,
+  ReadingSession,
+  BookHighlight,
+  ProjectTask,
+  TaskMedia,
+  Todo,
+  Reminder,
+  RoutineCategoryInsert,
+  ProjectCategoryInsert,
+  BookInsert,
+  ReadingSessionInsert,
+  BookHighlightInsert,
+  ProjectTaskInsert,
+  TaskMediaInsert,
+  TodoInsert,
+  ReminderInsert,
 } from "./types/domain.js";
 
 // Streak calculation
 export { calculateStreak, type StreakResult } from "./streak/calculate.js";
+
+// Scheduling helpers
+export { isScheduledOn, timeOfDayGreeting } from "./schedule.js";
+
+// Mega average & task-tree progress
+export {
+  computeMegaAvg,
+  computeTaskProgress,
+  computeProjectProgress,
+  type MegaAvgInput,
+  type MegaAvgResult,
+  type TaskTreeNode,
+} from "./stats/progress.js";
+
+// Design tokens (shared between desktop & mobile)
+export {
+  Colors,
+  Accent,
+  PriorityColors,
+  Radius,
+  Motion,
+  SpringConfig,
+  FontSizes,
+  type ThemeMode,
+  type ThemeTokens,
+} from "./theme.js";
 
 // Date utilities
 export {
@@ -81,6 +126,10 @@ export {
   dateRange,
   startOfMonth,
   todayInTimezone,
+  yesterdayInTimezone,
+  dayStartInstant,
+  dayEndInstant,
+  dayNoonInstant,
   type DailyStat,
   type MonthlyStat,
   type YearlyStat,

@@ -36,6 +36,17 @@ export type Project       = Database["public"]["Tables"]["projects"]["Row"];
 export type ProjectUpdate = Database["public"]["Tables"]["project_updates"]["Row"];
 export type ProjectMedia  = Database["public"]["Tables"]["project_media"]["Row"];
 
+// --- v2 tables (migration 0004/0005) ---
+export type RoutineCategory  = Database["public"]["Tables"]["routine_categories"]["Row"];
+export type ProjectCategory  = Database["public"]["Tables"]["project_categories"]["Row"];
+export type Book             = Database["public"]["Tables"]["books"]["Row"];
+export type ReadingSession   = Database["public"]["Tables"]["reading_sessions"]["Row"];
+export type BookHighlight    = Database["public"]["Tables"]["book_highlights"]["Row"];
+export type ProjectTask      = Database["public"]["Tables"]["project_tasks"]["Row"];
+export type TaskMedia        = Database["public"]["Tables"]["task_media"]["Row"];
+export type Todo             = Database["public"]["Tables"]["todos"]["Row"];
+export type Reminder         = Database["public"]["Tables"]["reminders"]["Row"];
+
 // ---------------------------------------------------------------------------
 // Insert type aliases — what you pass to INSERT
 // ---------------------------------------------------------------------------
@@ -49,6 +60,17 @@ export type StreakInsert        = Database["public"]["Tables"]["streaks"]["Inser
 export type ProjectInsert       = Database["public"]["Tables"]["projects"]["Insert"];
 export type ProjectUpdateInsert = Database["public"]["Tables"]["project_updates"]["Insert"];
 export type ProjectMediaInsert  = Database["public"]["Tables"]["project_media"]["Insert"];
+
+// --- v2 inserts ---
+export type RoutineCategoryInsert  = Database["public"]["Tables"]["routine_categories"]["Insert"];
+export type ProjectCategoryInsert  = Database["public"]["Tables"]["project_categories"]["Insert"];
+export type BookInsert             = Database["public"]["Tables"]["books"]["Insert"];
+export type ReadingSessionInsert   = Database["public"]["Tables"]["reading_sessions"]["Insert"];
+export type BookHighlightInsert    = Database["public"]["Tables"]["book_highlights"]["Insert"];
+export type ProjectTaskInsert      = Database["public"]["Tables"]["project_tasks"]["Insert"];
+export type TaskMediaInsert        = Database["public"]["Tables"]["task_media"]["Insert"];
+export type TodoInsert             = Database["public"]["Tables"]["todos"]["Insert"];
+export type ReminderInsert         = Database["public"]["Tables"]["reminders"]["Insert"];
 
 // ---------------------------------------------------------------------------
 // Update type aliases — what you pass to UPDATE (all fields optional)

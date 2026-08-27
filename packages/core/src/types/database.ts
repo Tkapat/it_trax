@@ -10,16 +10,136 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "14.15"
+    PostgrestVersion: "14.17"
+  }
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          extensions?: Json
+          operationName?: string
+          query?: string
+          variables?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
   }
   public: {
     Tables: {
+      book_highlights: {
+        Row: {
+          book_id: string
+          created_at: string | null
+          extracted_text: string | null
+          id: string
+          image_url: string | null
+          page_number: number | null
+          user_id: string
+        }
+        Insert: {
+          book_id: string
+          created_at?: string | null
+          extracted_text?: string | null
+          id?: string
+          image_url?: string | null
+          page_number?: number | null
+          user_id: string
+        }
+        Update: {
+          book_id?: string
+          created_at?: string | null
+          extracted_text?: string | null
+          id?: string
+          image_url?: string | null
+          page_number?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "book_highlights_book_id_fkey"
+            columns: ["book_id"]
+            isOneToOne: false
+            referencedRelation: "books"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      books: {
+        Row: {
+          author: string | null
+          cover_url: string | null
+          created_at: string | null
+          current_page: number | null
+          finished_at: string | null
+          id: string
+          isbn: string | null
+          routine_id: string
+          started_at: string | null
+          status: string | null
+          title: string
+          total_pages: number | null
+          user_id: string
+        }
+        Insert: {
+          author?: string | null
+          cover_url?: string | null
+          created_at?: string | null
+          current_page?: number | null
+          finished_at?: string | null
+          id?: string
+          isbn?: string | null
+          routine_id: string
+          started_at?: string | null
+          status?: string | null
+          title: string
+          total_pages?: number | null
+          user_id: string
+        }
+        Update: {
+          author?: string | null
+          cover_url?: string | null
+          created_at?: string | null
+          current_page?: number | null
+          finished_at?: string | null
+          id?: string
+          isbn?: string | null
+          routine_id?: string
+          started_at?: string | null
+          status?: string | null
+          title?: string
+          total_pages?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "books_routine_id_fkey"
+            columns: ["routine_id"]
+            isOneToOne: false
+            referencedRelation: "routines"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
           created_at: string
           full_name: string | null
           id: string
+          theme: string | null
           timezone: string
           updated_at: string
           username: string
@@ -29,6 +149,7 @@ export type Database = {
           created_at?: string
           full_name?: string | null
           id: string
+          theme?: string | null
           timezone?: string
           updated_at?: string
           username: string
@@ -38,9 +159,34 @@ export type Database = {
           created_at?: string
           full_name?: string | null
           id?: string
+          theme?: string | null
           timezone?: string
           updated_at?: string
           username?: string
+        }
+        Relationships: []
+      }
+      project_categories: {
+        Row: {
+          created_at: string | null
+          id: string
+          name: string
+          position: number | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          name: string
+          position?: number | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          name?: string
+          position?: number | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -89,6 +235,54 @@ export type Database = {
           },
         ]
       }
+      project_tasks: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_completed: boolean | null
+          name: string
+          parent_task_id: string | null
+          position: number | null
+          project_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_completed?: boolean | null
+          name: string
+          parent_task_id?: string | null
+          position?: number | null
+          project_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_completed?: boolean | null
+          name?: string
+          parent_task_id?: string | null
+          position?: number | null
+          project_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_tasks_parent_task_id_fkey"
+            columns: ["parent_task_id"]
+            isOneToOne: false
+            referencedRelation: "project_tasks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_tasks_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       project_updates: {
         Row: {
           content: string
@@ -130,6 +324,7 @@ export type Database = {
       }
       projects: {
         Row: {
+          category_id: string | null
           created_at: string
           description: string | null
           github_url: string | null
@@ -140,6 +335,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          category_id?: string | null
           created_at?: string
           description?: string | null
           github_url?: string | null
@@ -150,6 +346,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          category_id?: string | null
           created_at?: string
           description?: string | null
           github_url?: string | null
@@ -161,6 +358,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "projects_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "project_categories"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "projects_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
@@ -169,11 +373,110 @@ export type Database = {
           },
         ]
       }
+      reading_sessions: {
+        Row: {
+          book_id: string
+          created_at: string | null
+          date: string
+          id: string
+          minutes_spent: number | null
+          note: string | null
+          pages_read: number
+          user_id: string
+        }
+        Insert: {
+          book_id: string
+          created_at?: string | null
+          date?: string
+          id?: string
+          minutes_spent?: number | null
+          note?: string | null
+          pages_read: number
+          user_id: string
+        }
+        Update: {
+          book_id?: string
+          created_at?: string | null
+          date?: string
+          id?: string
+          minutes_spent?: number | null
+          note?: string | null
+          pages_read?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reading_sessions_book_id_fkey"
+            columns: ["book_id"]
+            isOneToOne: false
+            referencedRelation: "books"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reminders: {
+        Row: {
+          created_at: string | null
+          id: string
+          item_id: string
+          item_type: string
+          remind_at: string
+          repeat_rule: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          item_id: string
+          item_type: string
+          remind_at: string
+          repeat_rule?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          item_id?: string
+          item_type?: string
+          remind_at?: string
+          repeat_rule?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      routine_categories: {
+        Row: {
+          created_at: string | null
+          icon: string | null
+          id: string
+          name: string
+          position: number | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          icon?: string | null
+          id?: string
+          name: string
+          position?: number | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          icon?: string | null
+          id?: string
+          name?: string
+          position?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       routine_logs: {
         Row: {
           completed_at: string
           created_at: string
           id: string
+          logged_late: boolean | null
           notes: string | null
           routine_id: string
           user_id: string
@@ -182,6 +485,7 @@ export type Database = {
           completed_at?: string
           created_at?: string
           id?: string
+          logged_late?: boolean | null
           notes?: string | null
           routine_id: string
           user_id: string
@@ -190,6 +494,7 @@ export type Database = {
           completed_at?: string
           created_at?: string
           id?: string
+          logged_late?: boolean | null
           notes?: string | null
           routine_id?: string
           user_id?: string
@@ -213,42 +518,58 @@ export type Database = {
       }
       routines: {
         Row: {
+          category_id: string | null
           created_at: string
           custom_days: number[] | null
           description: string | null
           frequency: Database["public"]["Enums"]["routine_frequency"]
           id: string
           is_active: boolean
+          is_must_do: boolean
           name: string
           time_of_day: string | null
+          type: string
           updated_at: string
           user_id: string
         }
         Insert: {
+          category_id?: string | null
           created_at?: string
           custom_days?: number[] | null
           description?: string | null
           frequency?: Database["public"]["Enums"]["routine_frequency"]
           id?: string
           is_active?: boolean
+          is_must_do?: boolean
           name: string
           time_of_day?: string | null
+          type?: string
           updated_at?: string
           user_id: string
         }
         Update: {
+          category_id?: string | null
           created_at?: string
           custom_days?: number[] | null
           description?: string | null
           frequency?: Database["public"]["Enums"]["routine_frequency"]
           id?: string
           is_active?: boolean
+          is_must_do?: boolean
           name?: string
           time_of_day?: string | null
+          type?: string
           updated_at?: string
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "routines_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "routine_categories"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "routines_user_id_fkey"
             columns: ["user_id"]
@@ -345,6 +666,54 @@ export type Database = {
           },
         ]
       }
+      task_media: {
+        Row: {
+          caption: string | null
+          created_at: string | null
+          file_type: string | null
+          file_url: string
+          id: string
+          project_id: string | null
+          task_id: string | null
+          user_id: string
+        }
+        Insert: {
+          caption?: string | null
+          created_at?: string | null
+          file_type?: string | null
+          file_url: string
+          id?: string
+          project_id?: string | null
+          task_id?: string | null
+          user_id: string
+        }
+        Update: {
+          caption?: string | null
+          created_at?: string | null
+          file_type?: string | null
+          file_url?: string
+          id?: string
+          project_id?: string | null
+          task_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "task_media_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "task_media_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "project_tasks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tasks: {
         Row: {
           created_at: string
@@ -399,6 +768,50 @@ export type Database = {
           },
         ]
       }
+      todos: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          due_date: string | null
+          id: string
+          is_completed: boolean | null
+          priority: string | null
+          project_id: string | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          is_completed?: boolean | null
+          priority?: string | null
+          project_id?: string | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          is_completed?: boolean | null
+          priority?: string | null
+          project_id?: string | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "todos_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       routine_heatmap: {
@@ -439,6 +852,10 @@ export type Database = {
           routine_id: string
           time_of_day: string
         }[]
+      }
+      recalculate_streak: {
+        Args: { p_routine_id: string; p_user_id: string }
+        Returns: undefined
       }
       show_limit: { Args: never; Returns: number }
       show_trgm: { Args: { "": string }; Returns: string[] }
@@ -579,6 +996,9 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
   public: {
     Enums: {
       project_status: ["active", "paused", "completed", "archived"],
