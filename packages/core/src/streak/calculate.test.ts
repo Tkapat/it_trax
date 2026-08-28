@@ -8,7 +8,7 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { calculateStreak } from "./calculate.js";
+import { calculateReadingStreak, calculateStreak } from "./calculate.js";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -199,5 +199,55 @@ describe("calculateStreak — historic long streak, no current streak", () => {
     expect(result.currentStreak).toBe(0);
     expect(result.longestStreak).toBe(7);
     expect(result.lastCompletedDate).toBe("2026-08-20");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// calculateReadingStreak — separate from calculateStreak (uses reading_sessions.date)
+// ---------------------------------------------------------------------------
+
+describe("calculateReadingStreak — separate streak from routine logs", () => {
+  it("returns zeroes for no sessions", () => {
+    const result = calculateReadingStreak([], TODAY, TZ);
+    expect(result).toEqual({
+      currentStreak: 0,
+      longestStreak: 0,
+      lastCompletedDate: null,
+    });
+  });
+
+  it("counts consecutive session days ending today", () => {
+    const sessions = [
+      { date: "2026-08-23" },
+      { date: "2026-08-22" },
+      { date: "2026-08-21" },
+    ];
+    const result = calculateReadingStreak(sessions, TODAY, TZ);
+    expect(result.currentStreak).toBe(3);
+    expect(result.longestStreak).toBe(3);
+    expect(result.lastCompletedDate).toBe("2026-08-23");
+  });
+
+  it("ignores duplicate sessions on the same day", () => {
+    const sessions = [
+      { date: "2026-08-23" },
+      { date: "2026-08-23" },
+      { date: "2026-08-22" },
+    ];
+    const result = calculateReadingStreak(sessions, TODAY, TZ);
+    expect(result.currentStreak).toBe(2);
+  });
+
+  it("breaks current streak when a day is missing, but keeps longest", () => {
+    const sessions = [
+      { date: "2026-08-23" },
+      { date: "2026-08-21" },
+      { date: "2026-08-20" },
+      { date: "2026-08-19" },
+    ];
+    const result = calculateReadingStreak(sessions, TODAY, TZ);
+    // 8-23 today, but 8-22 missing → current streak is just today
+    expect(result.currentStreak).toBe(1);
+    expect(result.longestStreak).toBe(3);
   });
 });

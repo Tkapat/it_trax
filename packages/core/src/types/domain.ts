@@ -53,6 +53,7 @@ export type ProjectCategory  = Database["public"]["Tables"]["project_categories"
 export type Book             = Database["public"]["Tables"]["books"]["Row"];
 export type ReadingSession   = Database["public"]["Tables"]["reading_sessions"]["Row"];
 export type BookHighlight    = Database["public"]["Tables"]["book_highlights"]["Row"];
+export type BookNote         = Database["public"]["Tables"]["book_notes"]["Row"];
 export type ProjectTask      = Database["public"]["Tables"]["project_tasks"]["Row"];
 export type TaskMedia        = Database["public"]["Tables"]["task_media"]["Row"];
 export type ProjectLink      = Database["public"]["Tables"]["project_links"]["Row"];
@@ -79,6 +80,7 @@ export type ProjectCategoryInsert  = Database["public"]["Tables"]["project_categ
 export type BookInsert             = Database["public"]["Tables"]["books"]["Insert"];
 export type ReadingSessionInsert   = Database["public"]["Tables"]["reading_sessions"]["Insert"];
 export type BookHighlightInsert    = Database["public"]["Tables"]["book_highlights"]["Insert"];
+export type BookNoteInsert         = Database["public"]["Tables"]["book_notes"]["Insert"];
 export type ProjectTaskInsert      = Database["public"]["Tables"]["project_tasks"]["Insert"];
 export type TaskMediaInsert        = Database["public"]["Tables"]["task_media"]["Insert"];
 export type ProjectLinkInsert      = Database["public"]["Tables"]["project_links"]["Insert"];
@@ -99,6 +101,10 @@ export type ProjectRowUpdate    = Database["public"]["Tables"]["projects"]["Upda
 export type ProjectLinkUpdate   = Database["public"]["Tables"]["project_links"]["Update"];
 export type ProjectUpdateUpdate = Database["public"]["Tables"]["project_updates"]["Update"];
 export type ProjectMediaUpdate  = Database["public"]["Tables"]["project_media"]["Update"];
+export type BookUpdate          = Database["public"]["Tables"]["books"]["Update"];
+export type ReadingSessionUpdate = Database["public"]["Tables"]["reading_sessions"]["Update"];
+export type BookHighlightUpdate  = Database["public"]["Tables"]["book_highlights"]["Update"];
+export type BookNoteUpdate       = Database["public"]["Tables"]["book_notes"]["Update"];
 
 // ---------------------------------------------------------------------------
 // Generic table-key utilities

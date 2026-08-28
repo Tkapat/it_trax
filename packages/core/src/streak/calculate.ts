@@ -16,7 +16,7 @@
  */
 
 import { Temporal } from "@js-temporal/polyfill";
-import type { RoutineLog } from "../types/domain.js";
+import type { ReadingSession, RoutineLog } from "../types/domain.js";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -151,6 +151,93 @@ export function calculateStreak(
 
     const gap = curr.since(prev, { largestUnit: "days" }).days;
 
+    if (gap === 1) {
+      runLength += 1;
+    } else {
+      longestStreak = Math.max(longestStreak, runLength);
+      runLength = 1;
+    }
+  }
+  longestStreak = Math.max(longestStreak, runLength);
+
+  return {
+    currentStreak,
+    longestStreak,
+    lastCompletedDate: lastDate.toString(),
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Reading streak — same algorithm, separate data source
+// ---------------------------------------------------------------------------
+
+/**
+ * Calculates current and longest reading streaks from `reading_sessions`.
+ *
+ * This is deliberately a SEPARATE computation from the routine's own must-do
+ * streak (which uses `routine_logs` and `calculateStreak`). It walks the same
+ * consecutive-day algorithm but against reading session dates, so the reading
+ * streak and the routine's streak never conflate.
+ *
+ * `session.date` should be a `YYYY-MM-DD` string.
+ */
+export function calculateReadingStreak(
+  sessions: ReadonlyArray<Pick<ReadingSession, "date">>,
+  today?: Date,
+  timezone: string = "Asia/Kolkata"
+): StreakResult {
+  if (sessions.length === 0) {
+    return { currentStreak: 0, longestStreak: 0, lastCompletedDate: null };
+  }
+
+  // Parse date strings as plain dates in the session "date" field (YYYY-MM-DD).
+  const seen = new Set<string>();
+  const dates: Temporal.PlainDate[] = [];
+  for (const s of sessions) {
+    if (!s.date) continue;
+    const norm = s.date.slice(0, 10);
+    if (!seen.has(norm)) {
+      seen.add(norm);
+      dates.push(Temporal.PlainDate.from(norm));
+    }
+  }
+  if (dates.length === 0) {
+    return { currentStreak: 0, longestStreak: 0, lastCompletedDate: null };
+  }
+  dates.sort((a, b) => Temporal.PlainDate.compare(b, a));
+  const lastDate = dates[0];
+
+  if (!lastDate) {
+    return { currentStreak: 0, longestStreak: 0, lastCompletedDate: null };
+  }
+
+  const nowInstant = today
+    ? Temporal.Instant.fromEpochMilliseconds(today.getTime())
+    : Temporal.Now.instant();
+  const todayDate = nowInstant.toZonedDateTimeISO(timezone).toPlainDate();
+
+  const daysSinceLastCompletion = todayDate.since(lastDate, {
+    largestUnit: "days",
+  }).days;
+
+  let currentStreak = 0;
+  if (daysSinceLastCompletion <= 1) {
+    const dateSet = new Set(dates.map((d) => d.toString()));
+    let cursor = lastDate;
+    while (dateSet.has(cursor.toString())) {
+      currentStreak += 1;
+      cursor = cursor.subtract({ days: 1 });
+    }
+  }
+
+  const ascending = [...dates].reverse();
+  let longestStreak = 0;
+  let runLength = 1;
+  for (let i = 1; i < ascending.length; i++) {
+    const prev = ascending[i - 1];
+    const curr = ascending[i];
+    if (!prev || !curr) continue;
+    const gap = curr.since(prev, { largestUnit: "days" }).days;
     if (gap === 1) {
       runLength += 1;
     } else {

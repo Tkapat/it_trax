@@ -54,6 +54,10 @@ export type {
   ProjectRowUpdate,
   ProjectUpdateUpdate,
   ProjectLinkUpdate,
+  BookUpdate,
+  ReadingSessionUpdate,
+  BookHighlightUpdate,
+  BookNoteUpdate,
   TableRow,
   TableInsert,
   TableUpdate,
@@ -68,6 +72,7 @@ export type {
   Book,
   ReadingSession,
   BookHighlight,
+  BookNote,
   ProjectTask,
   TaskMedia,
   ProjectLink,
@@ -78,6 +83,7 @@ export type {
   BookInsert,
   ReadingSessionInsert,
   BookHighlightInsert,
+  BookNoteInsert,
   ProjectTaskInsert,
   TaskMediaInsert,
   ProjectLinkInsert,
@@ -86,7 +92,7 @@ export type {
 } from "./types/domain.js";
 
 // Streak calculation
-export { calculateStreak, type StreakResult } from "./streak/calculate.js";
+export { calculateStreak, calculateReadingStreak, type StreakResult } from "./streak/calculate.js";
 
 // Scheduling helpers
 export { isScheduledOn, timeOfDayGreeting } from "./schedule.js";

@@ -77,6 +77,60 @@ export type Database = {
           },
         ]
       }
+      book_notes: {
+        Row: {
+          book_id: string
+          content: string | null
+          created_at: string | null
+          id: string
+          page_reference: number | null
+          parent_note_id: string | null
+          position: number | null
+          title: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          book_id: string
+          content?: string | null
+          created_at?: string | null
+          id?: string
+          page_reference?: number | null
+          parent_note_id?: string | null
+          position?: number | null
+          title?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          book_id?: string
+          content?: string | null
+          created_at?: string | null
+          id?: string
+          page_reference?: number | null
+          parent_note_id?: string | null
+          position?: number | null
+          title?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "book_notes_book_id_fkey"
+            columns: ["book_id"]
+            isOneToOne: false
+            referencedRelation: "books"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "book_notes_parent_note_id_fkey"
+            columns: ["parent_note_id"]
+            isOneToOne: false
+            referencedRelation: "book_notes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       books: {
         Row: {
           author: string | null
