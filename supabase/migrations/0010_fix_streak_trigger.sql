@@ -1,9 +1,23 @@
 -- =============================================================================
--- MIGRATION: Add automatic streak recalculation trigger
--- 0002_streak_trigger.sql
+-- MIGRATION: Fix bugs in recalculate_streak (0002)
+-- 0010_fix_streak_trigger.sql
+--
+-- Two bugs in the ORIGINAL 0002 function, both triggered on any routine
+-- checkbox tap (the AFTER INSERT trigger on routine_logs calls this):
+--
+--  1) `v_date_set` was declared `record;` but used as a boolean
+--     (`if not v_date_set then`). PL/pgSQL rejects boolean context on a
+--     record, so every single tap threw:
+--        argument of NOT must be type boolean, not type record (SQLSTATE 42804)
+--     and the routine_logs insert was rolled back. Fixed: declare boolean.
+--
+--  2) The temp tables used fixed names with `on commit drop`, so a SECOND
+--     invocation within the same transaction (another tap / 0002's own
+--     backfill loop / any multi-insert) collided on the still-uncommitted
+--     table:  relation "temp_streak_dates" already exists (SQLSTATE 42P07).
+--     Fixed: drop each temp table before creating it.
 -- =============================================================================
 
--- Function to recalculate and upsert streak for a routine
 create or replace function public.recalculate_streak(
   p_routine_id uuid,
   p_user_id uuid
@@ -107,47 +121,5 @@ begin
     longest_streak = excluded.longest_streak,
     last_completed_date = excluded.last_completed_date,
     updated_at = now();
-end;
-$$;
-
--- Trigger function to call recalculate_streak after routine_logs insert/delete
-create or replace function public.trigger_recalculate_streak()
-returns trigger
-language plpgsql
-security definer
-set search_path = public
-as $$
-begin
-  -- NEW is available on INSERT, OLD on DELETE
-  perform public.recalculate_streak(
-    coalesce(NEW.routine_id, OLD.routine_id),
-    coalesce(NEW.user_id, OLD.user_id)
-  );
-  return null; -- result is ignored since this is an AFTER trigger
-end;
-$$;
-
--- Create triggers on routine_logs
-drop trigger if exists routine_logs_recalc_streak_insert on public.routine_logs;
-create trigger routine_logs_recalc_streak_insert
-  after insert on public.routine_logs
-  for each row
-  execute function public.trigger_recalculate_streak();
-
-drop trigger if exists routine_logs_recalc_streak_delete on public.routine_logs;
-create trigger routine_logs_recalc_streak_delete
-  after delete on public.routine_logs
-  for each row
-  execute function public.trigger_recalculate_streak();
-
--- Recalculate streaks for all existing data
--- (run once after migration)
-do $$
-declare
-  r record;
-begin
-  for r in select distinct routine_id, user_id from public.routine_logs loop
-    perform public.recalculate_streak(r.routine_id, r.user_id);
-  end loop;
 end;
 $$;
