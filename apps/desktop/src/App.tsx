@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { SupabaseProvider } from "./hooks/useSupabase";
 import { AuthProvider, useAuth } from "./hooks/useAuth";
+import { ThemeProvider } from "./theme/ThemeContext";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 
 // We'll import these pages next
@@ -71,7 +72,8 @@ export default function App() {
   return (
     <SupabaseProvider>
       <AuthProvider>
-        <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <QueryClientProvider client={queryClient}>
           <BrowserRouter>
             <Routes>
               {/* Public Routes */}
@@ -116,7 +118,8 @@ export default function App() {
               </Route>
             </Routes>
           </BrowserRouter>
-        </QueryClientProvider>
+          </QueryClientProvider>
+        </ThemeProvider>
       </AuthProvider>
     </SupabaseProvider>
   );

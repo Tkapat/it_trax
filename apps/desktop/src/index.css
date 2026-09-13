@@ -130,3 +130,30 @@ input::placeholder, textarea::placeholder { color: var(--text-tertiary); }
 .btn-secondary:hover:not(:disabled) { border-color: var(--text-tertiary); }
 
 .heatmap-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+
+/* --------------------------------------------------------------------------
+   Light theme — derived from @trax/core theme.ts light tokens.
+   Applied by the <html data-theme="light"> attribute (see ThemeContext).
+   -------------------------------------------------------------------------- */
+html[data-theme="light"] {
+  --bg-color: #FFFFFF;            /* bg-base */
+  --bg-secondary: #FAFAFA;        /* bg-elevated (cards, modals) */
+  --bg-tertiary: #F0F0F0;         /* bg-elevated-2 (nested, inputs) */
+  --border-color: #E5E5E5;        /* border-hairline */
+
+  --text-primary: #000000;
+  --text-secondary: #737373;
+  --text-tertiary: #A3A3A3;
+}
+
+@media (prefers-color-scheme: light) {
+  html:not([data-theme]) {
+    --bg-color: #FFFFFF;
+    --bg-secondary: #FAFAFA;
+    --bg-tertiary: #F0F0F0;
+    --border-color: #E5E5E5;
+    --text-primary: #000000;
+    --text-secondary: #737373;
+    --text-tertiary: #A3A3A3;
+  }
+}

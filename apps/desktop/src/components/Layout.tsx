@@ -1,9 +1,11 @@
 import { Outlet, NavLink } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import { CheckCircle2, CalendarDays, LogOut, FolderKanban, CheckSquare } from "lucide-react";
+import { useTheme } from "../theme/ThemeContext";
+import { CheckCircle2, CalendarDays, LogOut, FolderKanban, CheckSquare, Sun, Moon } from "lucide-react";
 
 export function Layout() {
   const { signOut, user } = useAuth();
+  const { mode, setMode } = useTheme();
 
   return (
     <div className="app-container">
@@ -131,6 +133,26 @@ export function Layout() {
           <div style={{ padding: '0 12px', marginBottom: '12px', fontSize: '13px', color: 'var(--text-tertiary)' }}>
             {user?.email}
           </div>
+          <button
+            onClick={() => setMode(mode === 'light' ? 'dark' : 'light')}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              padding: '10px 12px',
+              borderRadius: 'var(--radius-md)',
+              color: 'var(--text-secondary)',
+              width: '100%',
+              textAlign: 'left',
+              transition: 'all var(--transition-fast)',
+              marginBottom: '4px',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
+          >
+            {mode === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+            <span>Switch to {mode === 'dark' ? 'Light' : 'Dark'} Mode</span>
+          </button>
           <button
             onClick={signOut}
             style={{
