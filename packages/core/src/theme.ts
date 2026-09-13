@@ -11,38 +11,60 @@
 
 export const Colors = {
   dark: {
-    bgBase: "#000000",
-    bgElevated: "#0D0D0D",
-    bgElevated2: "#161616",
-    borderHairline: "#262626",
-    textPrimary: "#FFFFFF",
-    textSecondary: "#A3A3A3",
-    textTertiary: "#6B6B6B",
+    bgBase: '#0A0A0A',
+    bgElevated: '#161616',
+    bgElevated2: '#1F1F1F',
+    borderHairline: 'transparent',
+    textPrimary: '#FFFFFF',
+    textSecondary: '#A3A3A3',
+    textTertiary: '#6B6B6B',
+    shadowLight: 'rgba(255,255,255,0.04)',
+    shadowDark: 'rgba(0,0,0,0.6)',
   },
   light: {
-    bgBase: "#FFFFFF",
-    bgElevated: "#FAFAFA",
-    bgElevated2: "#F0F0F0",
-    borderHairline: "#E5E5E5",
-    textPrimary: "#000000",
-    textSecondary: "#737373",
-    textTertiary: "#A3A3A3",
+    bgBase: '#F0F0F0',
+    bgElevated: '#FAFAFA',
+    bgElevated2: '#FFFFFF',
+    borderHairline: 'transparent',
+    textPrimary: '#000000',
+    textSecondary: '#737373',
+    textTertiary: '#A3A3A3',
+    shadowLight: 'rgba(255,255,255,0.9)',
+    shadowDark: 'rgba(0,0,0,0.12)',
   },
 } as const;
 
-/** Accent — the ONLY saturated color. Progress rings, streaks, focus. */
-export const Accent = {
-  accent: "#FFB800",
-  /** 20% opacity — ring tracks, subtle backgrounds */
-  accentDim: "#FFB80033",
+/** Accent theme names — independent axis from dark/light mode. */
+export type AccentName = 'amber' | 'crimson' | 'emerald' | 'sapphire' | 'violet' | 'rose' | 'cyan';
+
+export const AccentThemes: Record<AccentName, { accent: string; accentDim: string }> = {
+  amber:   { accent: '#FFB800', accentDim: '#FFB80033' },
+  crimson: { accent: '#FF4545', accentDim: '#FF454533' },
+  emerald: { accent: '#2ECC71', accentDim: '#2ECC7133' },
+  sapphire:{ accent: '#3B82F6', accentDim: '#3B82F633' },
+  violet:  { accent: '#A855F7', accentDim: '#A855F733' },
+  rose:    { accent: '#FF6FA5', accentDim: '#FF6FA533' },
+  cyan:    { accent: '#22D3EE', accentDim: '#22D3EE33' },
+} as const;
+
+/** Default accent theme. */
+export const Accent: { accent: string; accentDim: string; theme: AccentName; themes: typeof AccentThemes } = {
+  accent: '#FFB800',
+  accentDim: '#FFB80033',
+  theme: 'amber',
+  themes: AccentThemes,
 } as const;
 
 /** Priority dots (To Do tab only) — small, never fill an element */
 export const PriorityColors = {
-  high: "#FF453A",
-  med: "#FFB800", // reuses accent
-  low: "#6B6B6B", // grey, not a color
+  high: '#FF453A',
+  med: '#FFB800', // reuses default accent
+  low: '#6B6B6B', // grey, not a color
 } as const;
+
+/** Resolve accent colors for a given theme name. */
+export function getAccentColors(name: AccentName) { return AccentThemes[name]; }
+
 
 export type ThemeMode = "dark" | "light";
 
@@ -53,8 +75,8 @@ export type ThemeTokens = typeof Colors.dark;
 // ---------------------------------------------------------------------------
 
 export const Radius = {
-  card: 16,
-  control: 12, // buttons, inputs
+  card: 20,
+  control: 14, // buttons, inputs
   pill: 999,
 } as const;
 

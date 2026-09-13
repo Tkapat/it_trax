@@ -1,12 +1,15 @@
 import React, { createContext, useContext, useCallback, useEffect, useMemo, useState } from "react";
 import { useSupabase } from "../hooks/useSupabase";
 import { useAuth } from "../hooks/useAuth";
+import type { AccentName } from "@trax/core";
 
 export type ThemeMode = "dark" | "light";
 
 interface ThemeContextValue {
   mode: ThemeMode;
   setMode: (mode: ThemeMode) => Promise<void>;
+  accentTheme: AccentName;
+  setAccentTheme: (name: AccentName) => Promise<void>;
 }
 
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
@@ -20,42 +23,51 @@ function applyMode(mode: ThemeMode) {
   }
 }
 
+function applyAccent(name: AccentName) {
+  document.documentElement.setAttribute("data-accent", name);
+}
+
 function normalizeMode(value: string | null | undefined): ThemeMode {
   return value === "light" ? "light" : "dark";
+}
+
+function normalizeAccent(value: string | null | undefined): AccentName {
+  const valid: AccentName[] = ['amber','crimson','emerald','sapphire','violet','rose','cyan'];
+  return (value && valid.includes(value as AccentName)) ? value as AccentName : 'amber';
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const supabase = useSupabase();
   const { user } = useAuth();
   const [mode, setModeState] = useState<ThemeMode>("dark");
+  const [accentTheme, setAccentThemeState] = useState<AccentName>('amber');
 
-  useEffect(() => {
-    applyMode(mode);
-  }, [mode]);
+  useEffect(() => { applyMode(mode); }, [mode]);
+  useEffect(() => { applyAccent(accentTheme); }, [accentTheme]);
 
   useEffect(() => {
     let active = true;
     const applyUserTheme = async () => {
       if (!user) {
-        if (active) setModeState("dark");
+        if (active) { setModeState("dark"); setAccentThemeState('amber'); }
         return;
       }
       const { data, error } = await supabase
         .from("profiles")
-        .select("theme")
+        .select("theme, accent_theme")
         .eq("id", user.id)
         .single();
       if (!active) return;
       if (!error && data) {
         setModeState(normalizeMode(data.theme));
+        setAccentThemeState(normalizeAccent(data.accent_theme));
       } else {
         setModeState("dark");
+        setAccentThemeState('amber');
       }
     };
     applyUserTheme();
-    return () => {
-      active = false;
-    };
+    return () => { active = false; };
   }, [user, supabase]);
 
   const setMode = useCallback(
@@ -67,7 +79,16 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     [user, supabase]
   );
 
-  const value = useMemo(() => ({ mode, setMode }), [mode, setMode]);
+  const setAccentTheme = useCallback(
+    async (next: AccentName) => {
+      setAccentThemeState(next);
+      if (!user) return;
+      await supabase.from("profiles").update({ accent_theme: next }).eq("id", user.id);
+    },
+    [user, supabase]
+  );
+
+  const value = useMemo(() => ({ mode, setMode, accentTheme, setAccentTheme }), [mode, setMode, accentTheme, setAccentTheme]);
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }

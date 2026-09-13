@@ -91,10 +91,9 @@ export function Calendar() {
               let border = '1px solid var(--border-color)';
               
               if (ratio > 0) {
-                // If it's a perfect 1 (100%), full cyan. Otherwise scaled opacity.
                 const opacity = ratio === 1 ? 1 : Math.max(0.3, ratio);
-                bg = `rgba(255, 184, 0, ${opacity})`;
-                border = '1px solid rgba(255, 184, 0, 0.5)';
+                bg = `color-mix(in srgb, var(--accent-color) ${Math.round(opacity * 100)}%, transparent)`;
+                border = '1px solid color-mix(in srgb, var(--accent-color) 50%, transparent)';
               }
 
               return (

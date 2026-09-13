@@ -65,6 +65,7 @@ create table public.profiles (
   full_name   text,
   avatar_url  text,
   timezone    text        not null default 'Asia/Kolkata',
+  accent_theme text      not null default 'amber',
   created_at  timestamptz not null default now(),
   updated_at  timestamptz not null default now(),
 
@@ -94,13 +95,14 @@ create trigger profiles_updated_at
 create or replace function public.handle_new_user()
 returns trigger language plpgsql security definer set search_path = public as $$
 begin
-  insert into public.profiles (id, username, full_name, avatar_url)
+  insert into public.profiles (id, username, full_name, avatar_url, accent_theme)
   values (
     new.id,
     -- derive a default username from email prefix; user can update it later
     lower(split_part(new.email, '@', 1)),
     new.raw_user_meta_data->>'full_name',
-    new.raw_user_meta_data->>'avatar_url'
+    new.raw_user_meta_data->>'avatar_url',
+    'amber'
   )
   on conflict (id) do nothing;
   return new;

@@ -116,6 +116,9 @@ export {
   Motion,
   SpringConfig,
   FontSizes,
+  AccentThemes,
+  getAccentColors,
+  type AccentName,
   type ThemeMode,
   type ThemeTokens,
 } from "./theme.js";

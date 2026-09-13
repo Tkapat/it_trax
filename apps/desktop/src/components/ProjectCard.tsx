@@ -34,12 +34,13 @@ export function ProjectCard({ project, onEdit, onDelete, onOpen }: ProjectCardPr
       style={{
         backgroundColor: "var(--bg-secondary)",
         borderRadius: "var(--radius-lg)",
-        border: "1px solid var(--border-color)",
+        border: "none",
+        boxShadow: "var(--shadow-md)",
         padding: "20px",
         cursor: "pointer",
-        transition: "border-color var(--transition-fast), box-shadow var(--transition-fast)",
+        transition: "box-shadow var(--transition-fast), transform var(--transition-fast)",
       }}
-      whileHover={{ borderColor: "var(--text-tertiary)", boxShadow: "var(--shadow-md)" }}
+      whileHover={{ boxShadow: "var(--shadow-lg)", y: -2 }}
       onClick={() => onOpen(project)}
     >
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "12px" }}>
