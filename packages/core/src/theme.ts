@@ -11,15 +11,15 @@
 
 export const Colors = {
   dark: {
-    bgBase: '#0A0A0A',
-    bgElevated: '#161616',
-    bgElevated2: '#1F1F1F',
+    bgBase: '#17150F', // warm near-black base
+    bgElevated: '#211E17', // card surface
+    bgElevated2: '#2A261D', // nested / pressed surface
     borderHairline: 'transparent',
-    textPrimary: '#FFFFFF',
-    textSecondary: '#A3A3A3',
+    textPrimary: '#F5F2EC',
+    textSecondary: '#A69C8C',
     textTertiary: '#6B6B6B',
-    shadowLight: 'rgba(255,255,255,0.04)',
-    shadowDark: 'rgba(0,0,0,0.6)',
+    shadowLight: 'rgba(255,244,224,0.06)',
+    shadowDark: 'rgba(0,0,0,0.75)',
   },
   light: {
     bgBase: '#F0F0F0',
@@ -75,7 +75,7 @@ export type ThemeTokens = typeof Colors.dark;
 // ---------------------------------------------------------------------------
 
 export const Radius = {
-  card: 20,
+  card: 28, // clay cards
   control: 14, // buttons, inputs
   pill: 999,
 } as const;
