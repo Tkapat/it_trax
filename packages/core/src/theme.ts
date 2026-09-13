@@ -29,8 +29,8 @@ export const Colors = {
     textPrimary: '#000000',
     textSecondary: '#737373',
     textTertiary: '#A3A3A3',
-    shadowLight: 'rgba(255,255,255,0.9)',
-    shadowDark: 'rgba(0,0,0,0.12)',
+    shadowLight: 'rgba(255,255,255,0.85)',
+    shadowDark: 'rgba(0,0,0,0.10)',
   },
 } as const;
 
