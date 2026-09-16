@@ -19,7 +19,7 @@ function baseStyle(radius: number): ViewStyle {
     borderWidth: Border.width.desktop,
     borderStyle: Border.style,
     borderColor: '#FFFFFF',
-    boxShadow: '4px 4px 0px var(--accent)',
+    boxShadow: '4px 4px 0px var(--accent-color)',
   };
 }
 
@@ -107,9 +107,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     alignItems: 'center',
     justifyContent: 'center',
-    boxShadow: '4px 4px 0px var(--accent)',
+    boxShadow: '4px 4px 0px var(--accent-color)',
   },
-  primary: { backgroundColor: '#FFB800' },
+  primary: { backgroundColor: 'var(--accent-color)' },
   secondary: { backgroundColor: '#0D0D0D' },
   pressed: {
     boxShadow: '0px 0px 0px transparent',
@@ -202,7 +202,7 @@ const formStyles = StyleSheet.create({
     fontSize: 16,
     color: '#FFFFFF',
     backgroundColor: '#0D0D0D',
-    boxShadow: '4px 4px 0px var(--accent)',
+    boxShadow: '4px 4px 0px var(--accent-color)',
   },
   badge: {
     borderRadius: Radius.badge,
@@ -212,9 +212,9 @@ const formStyles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 4,
     backgroundColor: '#0D0D0D',
-    boxShadow: '4px 4px 0px var(--accent)',
+    boxShadow: '4px 4px 0px var(--accent-color)',
   },
-  accentBadge: { backgroundColor: '#FFB800' },
+  accentBadge: { backgroundColor: 'var(--accent-color)' },
   badgeText: { color: '#FFFFFF', fontSize: 12, fontWeight: '600' },
   accentBadgeText: { color: '#000000' },
   checkbox: {
@@ -227,10 +227,10 @@ const formStyles = StyleSheet.create({
     backgroundColor: '#0D0D0D',
     alignItems: 'center',
     justifyContent: 'center',
-    boxShadow: '4px 4px 0px var(--accent)',
+    boxShadow: '4px 4px 0px var(--accent-color)',
   },
   checkboxChecked: {
-    backgroundColor: '#FFB800',
+    backgroundColor: 'var(--accent-color)',
     boxShadow: '0px 0px 0px transparent',
     transform: [{ translateX: 4 }, { translateY: 4 }],
   },

@@ -13,12 +13,12 @@ import { ShadowOffsets, Radius, Border, Colors } from './tokens';
 // Shared style helpers
 // ---------------------------------------------------------------------------
 
-function baseStyle(radius: number): ViewStyle {
+function baseStyle(radius: number, accentColor = '#FFB800'): ViewStyle {
   return {
     borderRadius: radius,
     borderWidth: Border.width.mobile,
     borderColor: Colors.dark.borderColor,
-    shadowColor: '#000000',
+    shadowColor: accentColor,
     shadowOffset: ShadowOffsets.resting,
     shadowOpacity: 1,
     shadowRadius: 0,
@@ -48,13 +48,14 @@ interface CardProps {
   children: React.ReactNode;
   style?: ViewStyle;
   pressed?: boolean;
+  accentColor?: string;
 }
 
-export function Card({ children, style, pressed = false }: CardProps) {
+export function Card({ children, style, pressed = false, accentColor = '#FFB800' }: CardProps) {
   return (
     <View
       style={[
-        baseStyle(Radius.card),
+        baseStyle(Radius.card, accentColor),
         pressed ? pressedStyle(Radius.card) : undefined,
         style,
       ]}
@@ -75,10 +76,12 @@ interface ButtonProps {
   pressed?: boolean;
   disabled?: boolean;
   style?: ViewStyle;
+  accentColor?: string;
 }
 
 export function Button({
   children, onPress, variant = 'primary', pressed = false, disabled = false, style,
+  accentColor = '#FFB800',
 }: ButtonProps) {
   return (
     <TouchableOpacity
@@ -87,7 +90,8 @@ export function Button({
       activeOpacity={1}
       style={[
         styles.button,
-        variant === 'primary' ? styles.primary : styles.secondary,
+        { shadowColor: accentColor },
+        variant === 'primary' ? { backgroundColor: accentColor } : styles.secondary,
         pressed && styles.pressed,
         disabled && styles.disabled,
         style,
@@ -112,14 +116,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#000000',
+    shadowColor: '#FFB800',
     shadowOffset: ShadowOffsets.resting,
     shadowOpacity: 1,
     shadowRadius: 0,
     elevation: 4,
   },
   primary: {
-    backgroundColor: Colors.dark.bgBase === '#000000' ? '#FFB800' : '#FFB800',
+    backgroundColor: '#FFB800',
   },
   secondary: {
     backgroundColor: Colors.dark.bgElevated,
@@ -154,9 +158,10 @@ interface InputProps {
   placeholderTextColor?: string;
   secureTextEntry?: boolean;
   style?: ViewStyle;
+  accentColor?: string;
 }
 
-export function Input({ value, onChangeText, placeholder, placeholderTextColor, secureTextEntry, style }: InputProps) {
+export function Input({ value, onChangeText, placeholder, placeholderTextColor, secureTextEntry, style, accentColor = '#FFB800' }: InputProps) {
   return (
     <TextInput
       value={value}
@@ -166,6 +171,7 @@ export function Input({ value, onChangeText, placeholder, placeholderTextColor, 
       secureTextEntry={secureTextEntry}
       style={[
         formStyles.input,
+        { shadowColor: accentColor },
         style,
       ]}
     />
@@ -180,11 +186,17 @@ interface BadgeProps {
   children: React.ReactNode;
   variant?: 'default' | 'accent';
   style?: ViewStyle;
+  accentColor?: string;
 }
 
-export function Badge({ children, variant = 'default', style }: BadgeProps) {
+export function Badge({ children, variant = 'default', style, accentColor = '#FFB800' }: BadgeProps) {
   return (
-    <View style={[formStyles.badge, variant === 'accent' && formStyles.accentBadge, style]}>
+    <View style={[
+      formStyles.badge,
+      { shadowColor: accentColor },
+      variant === 'accent' && { backgroundColor: accentColor },
+      style,
+    ]}>
       <Text style={[formStyles.badgeText, variant === 'accent' && formStyles.accentBadgeText]}>
         {children}
       </Text>
@@ -199,14 +211,20 @@ export function Badge({ children, variant = 'default', style }: BadgeProps) {
 interface CheckboxProps {
   checked: boolean;
   onPress?: () => void;
+  accentColor?: string;
 }
 
-export function Checkbox({ checked, onPress }: CheckboxProps) {
+export function Checkbox({ checked, onPress, accentColor = '#FFB800' }: CheckboxProps) {
   return (
     <TouchableOpacity
       onPress={onPress}
       activeOpacity={1}
-      style={[formStyles.checkbox, checked && formStyles.checkboxChecked]}
+      style={[
+        formStyles.checkbox,
+        { shadowColor: accentColor },
+        checked && { backgroundColor: accentColor },
+        checked && formStyles.checkboxChecked,
+      ]}
     >
       {checked && <Text style={formStyles.checkmark}>✓</Text>}
     </TouchableOpacity>
@@ -223,7 +241,7 @@ const formStyles = StyleSheet.create({
     fontSize: 16,
     color: Colors.dark.textPrimary,
     backgroundColor: Colors.dark.bgElevated,
-    shadowColor: '#000000',
+    shadowColor: '#FFB800',
     shadowOffset: ShadowOffsets.resting,
     shadowOpacity: 1,
     shadowRadius: 0,
@@ -236,7 +254,7 @@ const formStyles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 4,
     backgroundColor: Colors.dark.bgElevated,
-    shadowColor: '#000000',
+    shadowColor: '#FFB800',
     shadowOffset: ShadowOffsets.resting,
     shadowOpacity: 1,
     shadowRadius: 0,
@@ -254,7 +272,7 @@ const formStyles = StyleSheet.create({
     backgroundColor: Colors.dark.bgElevated,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#000000',
+    shadowColor: '#FFB800',
     shadowOffset: ShadowOffsets.resting,
     shadowOpacity: 1,
     shadowRadius: 0,

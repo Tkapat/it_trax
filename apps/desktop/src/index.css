@@ -9,7 +9,7 @@
   --text-primary: #FFFFFF;
   --text-secondary: #9A9A9A;
 
-  --shadow-resting: 4px 4px 0px var(--accent);
+  --shadow-resting: 4px 4px 0px var(--accent-color);
   --shadow-pressed: 0px 0px 0px transparent;
 
   --accent-color: #FFB800;
