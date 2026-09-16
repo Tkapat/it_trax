@@ -6,14 +6,97 @@
  */
 
 // ---------------------------------------------------------------------------
+// Accent base colours — each accent gets a subtly hue-shifted near-black
+// base for dark mode. Light mode stays neutral with barely-perceptible shifts.
+// ---------------------------------------------------------------------------
+
+export const AccentBaseColors: Record<AccentName, {
+  darkBgBase: string;
+}> = {
+  amber:   { darkBgBase: '#17150F' }, // warm near-black, unchanged default
+  crimson: { darkBgBase: '#1A1210' }, // warm red-tinted dark
+  emerald: { darkBgBase: '#101A14' }, // cool green-tinted dark
+  sapphire:{ darkBgBase: '#10141A' }, // cool blue-tinted dark
+  violet:  { darkBgBase: '#16121A' }, // violet-tinted dark
+  rose:    { darkBgBase: '#1A1216' }, // rose-tinted dark
+  cyan:    { darkBgBase: '#0F181A' }, // cool cyan-tinted dark
+};
+
+/** Convert '#rrggbb' to {r,g,b}. */
+function hexToRgb(hex: string): { r: number; g: number; b: number } {
+  const h = hex.replace('#', '');
+  return {
+    r: parseInt(h.slice(0, 2), 16),
+    g: parseInt(h.slice(2, 4), 16),
+    b: parseInt(h.slice(4, 6), 16),
+  };
+}
+
+/** Blend a hex colour toward `toward` (also hex) by `ratio` 0-1. */
+function mix(hex: string, toward: string, ratio: number): string {
+  const a = hexToRgb(hex);
+  const b = hexToRgb(toward);
+  const r = Math.round(a.r + (b.r - a.r) * ratio);
+  const g = Math.round(a.g + (b.g - a.g) * ratio);
+  const bb = Math.round(a.b + (b.b - a.b) * ratio);
+  return `#${r.toString(16).padStart(2,'0')}${g.toString(16).padStart(2,'0')}${bb.toString(16).padStart(2,'0')}`;
+}
+
+/** Derive the full dark palette from a base colour.
+ *
+ * bgBase is the accent base itself. bgElevated / bgElevated2 step toward
+ * white by fixed ratios (matching the current warm-grey lightness steps).
+ * shadowLight is a tint of the base at the same low opacity as amber's
+ * current `rgba(255,244,224,0.06)`. shadowDark stays constant (it's a
+ * cast shadow, not a surface). Text colours stay the current proven values.
+ */
+export function getAccentBasePalette(accentName: AccentName) {
+  const base = AccentBaseColors[accentName]?.darkBgBase ?? AccentBaseColors.amber.darkBgBase;
+  const bgElevated  = mix(base, '#FFFFFF', 0.07);
+  const bgElevated2 = mix(base, '#FFFFFF', 0.14);
+  const c = hexToRgb(base);
+  const shadowLight = `rgba(${c.r},${c.g},${c.b},0.06)`;
+  return {
+    bgBase: base,
+    bgElevated,
+    bgElevated2,
+    shadowLight,
+    shadowDark: 'rgba(0,0,0,0.75)',
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Accent-derived palettes (per-accent base with hue shift)
+// ---------------------------------------------------------------------------
+
+/** For light mode: apply a barely-perceptible hue shift by blending the
+ *  accent base into the neutral light palette at a tiny ratio.
+ *  Keeps light mode reading as neutral light grey. */
+export function getAccentLightPalette(accentName: AccentName) {
+  const base = AccentBaseColors[accentName]?.darkBgBase ?? AccentBaseColors.amber.darkBgBase;
+  const bgBase      = mix('#F0F0F0', base, 0.03);
+  const bgElevated  = mix('#FAFAFA', base, 0.03);
+  const bgElevated2 = mix('#FFFFFF', base, 0.03);
+  const c = hexToRgb(base);
+  return {
+    bgBase,
+    bgElevated,
+    bgElevated2,
+    shadowLight: `rgba(${c.r},${c.g},${c.b},0.04)`,
+    shadowDark: 'rgba(0,0,0,0.10)',
+  };
+}
+
+// ---------------------------------------------------------------------------
 // Palette
 // ---------------------------------------------------------------------------
 
+/** Neutral palette — fallback when accent-derivation is not needed. */
 export const Colors = {
   dark: {
-    bgBase: '#17150F', // warm near-black base
-    bgElevated: '#211E17', // card surface
-    bgElevated2: '#2A261D', // nested / pressed surface
+    bgBase: '#17150F', // warm near-black base (default / amber)
+    bgElevated: '#211E17',
+    bgElevated2: '#2A261D',
     borderHairline: 'transparent',
     textPrimary: '#F5F2EC',
     textSecondary: '#A69C8C',
