@@ -1,133 +1,177 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Martian+Mono:wght@700&family=JetBrains+Mono:wght@400;500;700&display=swap');
 
 :root {
-  /* Design system — derived from @trax/core theme.ts. Neubrutalism tokens. */
-  --bg-base: #000000;
-  --bg-elevated: #0D0D0D;
-  --bg-elevated-2: #161616;
-  --border-color: #FFFFFF;
-  --text-primary: #FFFFFF;
-  --text-secondary: #9A9A9A;
+  /* Brutalist foundation — flat tokens, zero blur everywhere. */
+  --bg-base: #141414;
+  --bg-elevated: #1C1C1C;
+  --border-color: #F5F5F5;
+  --text-primary: #F5F5F5;
+  --text-secondary: #A0A0A0;
 
-  --shadow-resting: 4px 4px 0px var(--accent-color);
-  --shadow-pressed: 0px 0px 0px transparent;
+  /* Shadow is the accent in dark mode (black shadows are invisible
+     on dark backgrounds), solid #111111 in light mode. */
+  --shadow: var(--accent-color);
 
-  --accent-color: #FFB800;
-  --accent-color-dim: #FFB80033;
+  --accent-color: #D7FF3F;
+  --accent-color-dim: #D7FF3F33;
 
-  --priority-high: #FF453A;
-  --error-color: #FF453A;
-
-  --radius-card: 14px;
-  --radius-control: 10px;
-  --radius-badge: 8px;
+  --radius-card: 16px;
+  --radius-control: 12px;
   --radius-full: 999px;
 
-  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-display: 'Space Grotesk', 'Inter', sans-serif;
-  --font-mono: 'Space Mono', 'JetBrains Mono', monospace;
+  --font-wordmark: 'Martian Mono', monospace;
+  --font-body: 'JetBrains Mono', ui-monospace, monospace;
 
   --transition-fast: 0.15s ease;
 }
 
 /* Accent themes — data attribute set by ThemeContext */
-[data-accent="crimson"]  { --accent-color: #FF4545; --accent-color-dim: #FF454533; }
-[data-accent="emerald"]  { --accent-color: #2ECC71; --accent-color-dim: #2ECC7133; }
-[data-accent="sapphire"] { --accent-color: #3B82F6; --accent-color-dim: #3B82F633; }
-[data-accent="violet"]   { --accent-color: #A855F7; --accent-color-dim: #A855F733; }
-[data-accent="rose"]     { --accent-color: #FF6FA5; --accent-color-dim: #FF6FA533; }
-[data-accent="cyan"]     { --accent-color: #22D3EE; --accent-color-dim: #22D3EE33; }
-[data-accent="amber"], [data-accent=""], :root { --accent-color: #FFB800; --accent-color-dim: #FFB80033; }
+[data-accent="signal-orange"] { --accent-color: #FF5C1A; --accent-color-dim: #FF5C1A33; }
+[data-accent="crimson"]       { --accent-color: #E8384F; --accent-color-dim: #E8384F33; }
+[data-accent="cobalt"]        { --accent-color: #2F5FE0; --accent-color-dim: #2F5FE033; }
+[data-accent="violet"]        { --accent-color: #8B5CF6; --accent-color-dim: #8B5CF633; }
+[data-accent="magenta"]       { --accent-color: #FF3D81; --accent-color-dim: #FF3D8133; }
+[data-accent="teal"]          { --accent-color: #00A8B5; --accent-color-dim: #00A8B533; }
+[data-accent="volt"], [data-accent=""], :root { --accent-color: #D7FF3F; --accent-color-dim: #D7FF3F33; }
 
-/* Neubrutalism surface */
-.neub-surface {
+/* Tiered elevation — the ONLY card language. No per-screen values. */
+.card-primary {
   background: var(--bg-elevated);
   border-radius: var(--radius-card);
-  border: 2.5px solid var(--border-color);
-  box-shadow: var(--shadow-resting);
+  border: 3px solid var(--border-color);
+  box-shadow: 4px 4px 0px var(--shadow);
 }
 
-.neub-surface.pressed,
-.neub-surface:active {
-  box-shadow: var(--shadow-pressed);
+.card-primary.pressed,
+.card-primary:active {
+  box-shadow: 0px 0px 0px transparent;
   transform: translate(4px, 4px);
 }
 
-/* Neubrutalism button */
-.neub-btn {
-  border-radius: var(--radius-control);
-  border: 2.5px solid var(--border-color);
-  box-shadow: var(--shadow-resting);
-  font-family: var(--font-display);
-  font-weight: 600;
+.card-secondary {
+  background: var(--bg-elevated);
+  border-radius: var(--radius-card);
+  border: 3px solid var(--border-color);
 }
 
-.neub-btn.primary {
+.card-tertiary {
+  background: var(--bg-elevated);
+  border-radius: var(--radius-control);
+}
+
+.btn {
+  border-radius: var(--radius-control);
+  border: 3px solid var(--border-color);
+  box-shadow: 4px 4px 0px var(--shadow);
+  font-family: var(--font-body);
+  font-weight: 500;
+}
+
+.btn.primary {
   background: var(--accent-color);
   color: #000000;
 }
 
-.neub-btn.secondary {
+.btn.secondary {
   background: var(--bg-elevated);
   color: var(--text-primary);
 }
 
-.neub-btn.pressed {
-  box-shadow: var(--shadow-pressed);
+.btn.pressed {
+  box-shadow: 0px 0px 0px transparent;
   transform: translate(4px, 4px);
 }
 
-/* Neubrutalism input */
-.neub-input {
+.input {
   border-radius: var(--radius-control);
-  border: 2.5px solid var(--border-color);
-  box-shadow: var(--shadow-resting);
+  border: 3px solid var(--border-color);
+  box-shadow: 4px 4px 0px var(--shadow);
   background: var(--bg-elevated);
   color: var(--text-primary);
   font-family: var(--font-body);
 }
 
-/* Neubrutalism badge */
-.neub-badge {
-  border-radius: var(--radius-badge);
-  border: 2.5px solid var(--border-color);
-  box-shadow: var(--shadow-resting);
-  font-family: var(--font-display);
-  font-weight: 600;
-}
-
-/* Neubrutalism checkbox */
-.neub-checkbox {
+.seg {
   border-radius: var(--radius-full);
-  border: 2.5px solid var(--border-color);
-  box-shadow: var(--shadow-resting);
+  border: 3px solid var(--border-color);
+  font-family: var(--font-body);
+  font-weight: 500;
 }
 
-.neub-checkbox.checked {
+.seg.selected-accent {
   background: var(--accent-color);
-  box-shadow: var(--shadow-pressed);
-  transform: translate(4px, 4px);
+  color: #000000;
+}
+
+.seg.selected-contrast {
+  background: var(--text-primary);
+  color: var(--bg-base);
+}
+
+.sticky-note {
+  border-radius: var(--radius-card);
+  border: 3px solid var(--border-color);
+  box-shadow: 4px 4px 0px var(--shadow);
+  background: var(--bg-elevated);
+  transform: rotate(-4deg);
+  position: relative;
+  overflow: hidden;
+}
+
+.sticky-note .fold {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-top: 28px solid var(--bg-base);
+  border-left: 28px solid transparent;
+}
+
+.divider-v {
+  width: 1.5px;
+  align-self: stretch;
+  background: var(--text-secondary);
+}
+
+.divider-h {
+  height: 1.5px;
+  width: 100%;
+  background: var(--text-secondary);
+}
+
+.wordmark {
+  font-family: var(--font-wordmark);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.tagline {
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 11px;
+  color: var(--text-secondary);
 }
 
 html[data-theme="light"] {
-  --bg-base: #FFFFFF;
-  --bg-elevated: #F7F7F7;
-  --bg-elevated-2: #EFEFEF;
-  --border-color: #000000;
-  --text-primary: #000000;
+  --bg-base: #FAFAF7;
+  --bg-elevated: #FFFFFF;
+  --border-color: #111111;
+  --text-primary: #111111;
   --text-secondary: #6B6B6B;
 
-  --shadow-resting: 4px 4px 0px var(--accent-color);
-  --shadow-pressed: 0px 0px 0px transparent;
+  --shadow: #111111;
 }
 
 @media (prefers-color-scheme: light) {
   html:not([data-theme]) {
-    --bg-base: #FFFFFF;
-    --bg-elevated: #F7F7F7;
-    --bg-elevated-2: #EFEFEF;
-    --border-color: #000000;
-    --text-primary: #000000;
+    --bg-base: #FAFAF7;
+    --bg-elevated: #FFFFFF;
+    --border-color: #111111;
+    --text-primary: #111111;
     --text-secondary: #6B6B6B;
+
+    --shadow: #111111;
   }
 }

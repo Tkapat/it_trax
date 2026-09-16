@@ -32,15 +32,23 @@ function normalizeMode(value: string | null | undefined): ThemeMode {
 }
 
 function normalizeAccent(value: string | null | undefined): AccentName {
-  const valid: AccentName[] = ['amber','crimson','emerald','sapphire','violet','rose','cyan'];
-  return (value && valid.includes(value as AccentName)) ? value as AccentName : 'amber';
+  const valid: AccentName[] = ['volt', 'signal-orange', 'crimson', 'cobalt', 'violet', 'magenta', 'teal'];
+  if (value && (valid as string[]).includes(value)) return value as AccentName;
+  const legacy: Record<string, AccentName> = {
+    amber: 'signal-orange',
+    emerald: 'teal',
+    sapphire: 'cobalt',
+    rose: 'magenta',
+    cyan: 'teal',
+  };
+  return (value && legacy[value]) || 'volt';
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const supabase = useSupabase();
   const { user } = useAuth();
   const [mode, setModeState] = useState<ThemeMode>("dark");
-  const [accentTheme, setAccentThemeState] = useState<AccentName>('amber');
+  const [accentTheme, setAccentThemeState] = useState<AccentName>('volt');
 
   useEffect(() => { applyMode(mode); }, [mode]);
   useEffect(() => { applyAccent(accentTheme); }, [accentTheme]);
@@ -49,7 +57,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     let active = true;
     const applyUserTheme = async () => {
       if (!user) {
-        if (active) { setModeState("dark"); setAccentThemeState('amber'); }
+        if (active) { setModeState("dark"); setAccentThemeState('volt'); }
         return;
       }
       const { data, error } = await supabase
@@ -63,7 +71,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         setAccentThemeState(normalizeAccent(data.accent_theme));
       } else {
         setModeState("dark");
-        setAccentThemeState('amber');
+        setAccentThemeState('volt');
       }
     };
     applyUserTheme();

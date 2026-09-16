@@ -117,10 +117,8 @@ export {
   SpringConfig,
   FontSizes,
   AccentThemes,
-  AccentBaseColors,
+  OnAccentText,
   getAccentColors,
-  getAccentBasePalette,
-  getAccentLightPalette,
   type AccentName,
   type ThemeMode,
   type ThemeTokens,
@@ -150,3 +148,6 @@ export {
   type YearlyStat,
   type HeatmapDataPoint,
 } from "./dates/rollups.js";
+
+// Rotating motivational quotes (StickyNoteCard)
+export { QUOTES, quoteOfTheDay } from "./quotes.js";

@@ -7,7 +7,7 @@ import {
   View, Text, TouchableOpacity, TextInput, StyleSheet,
   type ViewStyle,
 } from 'react-native';
-import { Radius, Border } from './tokens';
+import { Radius, Border, Colors } from './tokens';
 
 // ---------------------------------------------------------------------------
 // Shared style helpers
@@ -18,7 +18,7 @@ function baseStyle(radius: number): ViewStyle {
     borderRadius: radius,
     borderWidth: Border.width.desktop,
     borderStyle: Border.style,
-    borderColor: '#FFFFFF',
+    borderColor: Colors.dark.border,
     boxShadow: '4px 4px 0px var(--accent-color)',
   };
 }
@@ -28,7 +28,7 @@ function pressedStyle(radius: number): ViewStyle {
     borderRadius: radius,
     borderWidth: Border.width.desktop,
     borderStyle: Border.style,
-    borderColor: '#FFFFFF',
+    borderColor: Colors.dark.border,
     boxShadow: '0px 0px 0px transparent',
     transform: [{ translateX: 4 }, { translateY: 4 }],
   };
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     borderRadius: Radius.control,
     borderWidth: Border.width.desktop,
     borderStyle: Border.style,
-    borderColor: '#FFFFFF',
+    borderColor: Colors.dark.border,
     paddingVertical: 12,
     paddingHorizontal: 24,
     alignItems: 'center',
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     transform: [{ translateX: 4 }, { translateY: 4 }],
   },
   disabled: { opacity: 0.5 },
-  text: { fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: '600' },
+  text: { fontFamily: "'JetBrains Mono', monospace", fontSize: 16, fontWeight: '500' },
   primaryText: { color: '#000000' },
   secondaryText: { color: '#FFFFFF' },
 });
@@ -196,7 +196,7 @@ const formStyles = StyleSheet.create({
     borderRadius: Radius.control,
     borderWidth: Border.width.desktop,
     borderStyle: Border.style,
-    borderColor: '#FFFFFF',
+    borderColor: Colors.dark.border,
     paddingVertical: 12,
     paddingHorizontal: 16,
     fontSize: 16,
@@ -205,10 +205,10 @@ const formStyles = StyleSheet.create({
     boxShadow: '4px 4px 0px var(--accent-color)',
   },
   badge: {
-    borderRadius: Radius.badge,
+    borderRadius: Radius.control,
     borderWidth: Border.width.desktop,
     borderStyle: Border.style,
-    borderColor: '#FFFFFF',
+    borderColor: Colors.dark.border,
     paddingHorizontal: 10,
     paddingVertical: 4,
     backgroundColor: '#0D0D0D',
@@ -220,10 +220,10 @@ const formStyles = StyleSheet.create({
   checkbox: {
     width: 44,
     height: 44,
-    borderRadius: Radius.circle,
+    borderRadius: Radius.pill,
     borderWidth: Border.width.desktop,
     borderStyle: Border.style,
-    borderColor: '#FFFFFF',
+    borderColor: Colors.dark.border,
     backgroundColor: '#0D0D0D',
     alignItems: 'center',
     justifyContent: 'center',

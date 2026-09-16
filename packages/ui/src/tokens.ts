@@ -1,55 +1,48 @@
 /**
- * @repo/ui — Neubrutalism design tokens
+ * @repo/ui — Brutalist design tokens (single source for documentation;
+ * live apps read @trax/core + their own theme layers — same values).
  *
- * Shared between mobile (React Native) and desktop (React DOM).
- * Every app imports from here for font families, radii, borders, shadows.
+ * Flat tokens, zero blur. Borders structural (fixed per mode);
+ * shadow is the accent in dark mode, #111111 in light mode.
  */
 
 // ---------------------------------------------------------------------------
-// Font families
+// Font families — Martian Mono (wordmark ONLY), JetBrains Mono (everything)
 // ---------------------------------------------------------------------------
 
 export const Fonts = {
-  display: "'Space Grotesk', sans-serif",   // headers, big numbers
-  body: "'Inter', sans-serif",              // body / UI text (unchanged)
-  mono: "'Space Mono', monospace",          // stats, dates, streaks
+  wordmark: "'Martian Mono', monospace", // "trax" wordmark + dot, nowhere else
+  body: "'JetBrains Mono', ui-monospace, monospace", // headers/body/labels/buttons/inputs/stats
 } as const;
 
 export const FontWeights = {
-  display: { medium: 500, semibold: 600, bold: 700 } as const,
-  mono: { regular: 400, bold: 700 } as const,
+  regular: '400',
+  medium: '500',
+  bold: '700',
 } as const;
 
 // ---------------------------------------------------------------------------
-// Radius scale
+// Shape — 16 cards, 12 controls, pill segments/nav
 // ---------------------------------------------------------------------------
 
 export const Radius = {
-  card: 14,       // primary cards (routine, project, overview)
-  control: 10,    // buttons, inputs, pill-buttons
-  badge: 8,       // badges, small chips, tags
-  circle: 999,    // checkboxes, avatars, icon chips
+  card: 16,
+  control: 12,
+  pill: 999,
 } as const;
-
-// ---------------------------------------------------------------------------
-// Border
-// ---------------------------------------------------------------------------
 
 export const Border = {
-  width: {
-    mobile: 2,
-    desktop: 2.5,
-  },
-  style: 'solid' as const,
-  color: 'var(--border-color)',
+  width: { mobile: 2.5, desktop: 3 },
+  style: 'solid',
 } as const;
 
 // ---------------------------------------------------------------------------
-// Shadow — neubrutalism: hard offset, zero blur, zero spread
+// Shadow — flat 4px offset, zero blur, zero spread.
+// Resting offset; pressed collapses to zero + element translates (4,4).
 // ---------------------------------------------------------------------------
 
 export const Shadow = {
-  resting: '4px 4px 0px var(--accent)',
+  resting: '4px 4px 0px var(--shadow)',
   pressed: '0px 0px 0px transparent',
 } as const;
 
@@ -63,36 +56,34 @@ export const ShadowTranslate = {
 } as const;
 
 // ---------------------------------------------------------------------------
-// Color palette
+// Color palette — flat brutalist values
 // ---------------------------------------------------------------------------
 
 export const Colors = {
   dark: {
-    bgBase: '#000000',
-    bgElevated: '#0D0D0D',
-    bgElevated2: '#161616',
-    borderColor: '#FFFFFF',
-    textPrimary: '#FFFFFF',
-    textSecondary: '#9A9A9A',
+    bgBase: '#141414',
+    bgElevated: '#1C1C1C',
+    border: '#F5F5F5',
+    textPrimary: '#F5F5F5',
+    textSecondary: '#A0A0A0',
   },
   light: {
-    bgBase: '#FFFFFF',
-    bgElevated: '#F7F7F7',
-    bgElevated2: '#EFEFEF',
-    borderColor: '#000000',
-    textPrimary: '#000000',
+    bgBase: '#FAFAF7',
+    bgElevated: '#FFFFFF',
+    border: '#111111',
+    textPrimary: '#111111',
     textSecondary: '#6B6B6B',
   },
 } as const;
 
 export const AccentThemes = {
-  amber:   '#FFB800',
-  crimson: '#FF4545',
-  emerald: '#2ECC71',
-  sapphire:'#3B82F6',
-  violet:  '#A855F7',
-  rose:    '#FF6FA5',
-  cyan:    '#22D3EE',
+  volt: '#D7FF3F',
+  'signal-orange': '#FF5C1A',
+  crimson: '#E8384F',
+  cobalt: '#2F5FE0',
+  violet: '#8B5CF6',
+  magenta: '#FF3D81',
+  teal: '#00A8B5',
 } as const;
 
 export type AccentName = keyof typeof AccentThemes;

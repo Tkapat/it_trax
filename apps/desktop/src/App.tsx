@@ -15,6 +15,7 @@ import { Calendar } from "./pages/Calendar";
 import { Projects } from "./pages/Projects";
 import { ProjectDetail } from "./pages/ProjectDetail";
 import { Tasks } from "./pages/Tasks";
+import { DesignSystem } from "./pages/DesignSystem";
 import { LoadingSpinner } from "./components/LoadingSpinner";
 
 const queryClient = new QueryClient({
@@ -115,6 +116,7 @@ export default function App() {
                 <Route path="/projects" element={<Projects />} />
                 <Route path="/projects/:id" element={<ProjectDetail />} />
                 <Route path="/tasks" element={<Tasks />} />
+                <Route path="/design-system" element={<DesignSystem />} />
               </Route>
             </Routes>
           </BrowserRouter>

@@ -13,11 +13,11 @@ import { ShadowOffsets, Radius, Border, Colors } from './tokens';
 // Shared style helpers
 // ---------------------------------------------------------------------------
 
-function baseStyle(radius: number, accentColor = '#FFB800'): ViewStyle {
+function baseStyle(radius: number, accentColor = '#D7FF3F'): ViewStyle {
   return {
     borderRadius: radius,
     borderWidth: Border.width.mobile,
-    borderColor: Colors.dark.borderColor,
+    borderColor: Colors.dark.border,
     shadowColor: accentColor,
     shadowOffset: ShadowOffsets.resting,
     shadowOpacity: 1,
@@ -30,7 +30,7 @@ function pressedStyle(radius: number): ViewStyle {
   return {
     borderRadius: radius,
     borderWidth: Border.width.mobile,
-    borderColor: Colors.dark.borderColor,
+    borderColor: Colors.dark.border,
     shadowColor: 'transparent',
     shadowOffset: ShadowOffsets.pressed,
     shadowOpacity: 0,
@@ -51,7 +51,7 @@ interface CardProps {
   accentColor?: string;
 }
 
-export function Card({ children, style, pressed = false, accentColor = '#FFB800' }: CardProps) {
+export function Card({ children, style, pressed = false, accentColor = '#D7FF3F' }: CardProps) {
   return (
     <View
       style={[
@@ -81,7 +81,7 @@ interface ButtonProps {
 
 export function Button({
   children, onPress, variant = 'primary', pressed = false, disabled = false, style,
-  accentColor = '#FFB800',
+  accentColor = '#D7FF3F',
 }: ButtonProps) {
   return (
     <TouchableOpacity
@@ -111,19 +111,19 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: Radius.control,
     borderWidth: Border.width.mobile,
-    borderColor: Colors.dark.borderColor,
+    borderColor: Colors.dark.border,
     paddingVertical: 12,
     paddingHorizontal: 24,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#FFB800',
+    shadowColor: '#D7FF3F',
     shadowOffset: ShadowOffsets.resting,
     shadowOpacity: 1,
     shadowRadius: 0,
     elevation: 4,
   },
   primary: {
-    backgroundColor: '#FFB800',
+    backgroundColor: '#D7FF3F',
   },
   secondary: {
     backgroundColor: Colors.dark.bgElevated,
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
    text: {
-    fontFamily: 'SpaceGrotesk-Regular',
+    fontFamily: 'JetBrainsMono-Regular',
     fontSize: 16,
     fontWeight: '600',
   },
@@ -161,7 +161,7 @@ interface InputProps {
   accentColor?: string;
 }
 
-export function Input({ value, onChangeText, placeholder, placeholderTextColor, secureTextEntry, style, accentColor = '#FFB800' }: InputProps) {
+export function Input({ value, onChangeText, placeholder, placeholderTextColor, secureTextEntry, style, accentColor = '#D7FF3F' }: InputProps) {
   return (
     <TextInput
       value={value}
@@ -189,7 +189,7 @@ interface BadgeProps {
   accentColor?: string;
 }
 
-export function Badge({ children, variant = 'default', style, accentColor = '#FFB800' }: BadgeProps) {
+export function Badge({ children, variant = 'default', style, accentColor = '#D7FF3F' }: BadgeProps) {
   return (
     <View style={[
       formStyles.badge,
@@ -214,7 +214,7 @@ interface CheckboxProps {
   accentColor?: string;
 }
 
-export function Checkbox({ checked, onPress, accentColor = '#FFB800' }: CheckboxProps) {
+export function Checkbox({ checked, onPress, accentColor = '#D7FF3F' }: CheckboxProps) {
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -235,51 +235,51 @@ const formStyles = StyleSheet.create({
   input: {
     borderRadius: Radius.control,
     borderWidth: Border.width.mobile,
-    borderColor: Colors.dark.borderColor,
+    borderColor: Colors.dark.border,
     paddingVertical: 12,
     paddingHorizontal: 16,
     fontSize: 16,
     color: Colors.dark.textPrimary,
     backgroundColor: Colors.dark.bgElevated,
-    shadowColor: '#FFB800',
+    shadowColor: '#D7FF3F',
     shadowOffset: ShadowOffsets.resting,
     shadowOpacity: 1,
     shadowRadius: 0,
     elevation: 4,
   },
   badge: {
-    borderRadius: Radius.badge,
+    borderRadius: Radius.control,
     borderWidth: Border.width.mobile,
-    borderColor: Colors.dark.borderColor,
+    borderColor: Colors.dark.border,
     paddingHorizontal: 10,
     paddingVertical: 4,
     backgroundColor: Colors.dark.bgElevated,
-    shadowColor: '#FFB800',
+    shadowColor: '#D7FF3F',
     shadowOffset: ShadowOffsets.resting,
     shadowOpacity: 1,
     shadowRadius: 0,
     elevation: 4,
   },
-  accentBadge: { backgroundColor: '#FFB800' },
+  accentBadge: { backgroundColor: '#D7FF3F' },
   badgeText: { color: Colors.dark.textPrimary, fontSize: 12, fontWeight: '600' },
   accentBadgeText: { color: '#000000' },
   checkbox: {
     width: 44,
     height: 44,
-    borderRadius: Radius.circle,
+    borderRadius: Radius.pill,
     borderWidth: Border.width.mobile,
-    borderColor: Colors.dark.borderColor,
+    borderColor: Colors.dark.border,
     backgroundColor: Colors.dark.bgElevated,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#FFB800',
+    shadowColor: '#D7FF3F',
     shadowOffset: ShadowOffsets.resting,
     shadowOpacity: 1,
     shadowRadius: 0,
     elevation: 4,
   },
   checkboxChecked: {
-    backgroundColor: '#FFB800',
+    backgroundColor: '#D7FF3F',
     shadowOffset: ShadowOffsets.pressed,
     shadowOpacity: 0,
     shadowRadius: 0,
