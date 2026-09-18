@@ -1,159 +1,120 @@
-# Turborepo starter
+# Trax
 
-This Turborepo starter is maintained by the Turborepo core team.
+A personal-life operating system: **routines, calendar, projects, books and todos**
+in one app, wrapped in a brutalist, neubrutalist design language. Built as a
+pnpm + Turborepo monorepo around a single, strict UI design system defined once
+in `@trax/core`.
 
-## Using this example
+## Repo layout
 
-Run the following command:
+| Path | What it is |
+| --- | --- |
+| `apps/mobile` | Expo (React Native) app — the primary product. SDK 57, RN 0.86, React 19.2. Own git repo (submodule, see below). |
+| `apps/desktop` | Tauri + Vite desktop shell. |
+| `packages/core` | `@trax/core` — the **single source of truth**: UI design tokens (palette, accent themes, radii, font sizes), domain types, plus pure logic (dates, schedules, streaks, stats) with Vitest tests, and the Supabase client. |
+| `packages/ui` | `@trax/ui` — cross-app shared components (card, button, tokens, native/web aliases). |
+| `packages/eslint-config` · `packages/typescript-config` | Shared lint / TS configs. |
 
-```sh
-npx create-turbo@latest
-```
+## Design system
 
-## What's inside?
+Everything derives from `@trax/core` tokens; the mobile theme (`apps/mobile/src/theme`)
+re-exports them (see `src/theme/index.ts`). No per-screen border/shadow values are allowed.
 
-This Turborepo includes the following packages/apps:
+- **Palette** — flat brutalist tokens per mode via `Colors` per mode (dark / light). Borders are
+  structural (fixed per mode, never accent-tinted). Depth comes from a **solid accent
+  shadow**, applied by components, never stored as a color.
+  - dark: `bgBase #141414` · `bgElevated #1C1C1C` · `border #F5F5F5`
+  - light: `bgBase #FAFAF7` · `bgElevated #FFFFFF` · `border #111111`
+- **Accent themes** — an independent axis from dark/light mode: `volt`, `signal-orange`,
+  `crimson`, `cobalt`, `violet`, `magenta`, `teal`. `OnAccentText` picks black/white text
+  per accent (only cobalt needs white). Depends on Android `accent_theme` via expo-build-properties.
+- **Scales** — spacing `4/8/12/16/24/32/40` (`Spacing.sm2` is the 12px step); radii:
+  `control 12` · `card 16` · `pill 999`. Type scale `12/14/16/20/28/36`, JetBrains Mono;
+  quantities use tabular numerals (`Typography.num`).
+- **The Card is the ONLY card language.** `Card` renders `primary` (border + solid accent
+  block shadow at offset `(4,4)`, reserved *inside* the layout footprint via 4px padding —
+  shadows can never fuse or clip), `secondary` (border only), `tertiary` (plain fill).
+  Pressing sinks the face 4px.
+- **Shared primitives** (`apps/mobile/src/components/ui`): `Card`, `Button`, `Input`,
+  `Checkbox`, `SegmentedControl`, `StatRow` (interleaves vertical dividers, optional top
+  rule via `separated`), `Divider`, `Badge`, `StickyNoteCard`, `Sparkle`.
+- **Alignment is enforced, not eyeballed.** The 7-point checklist applied to every screen:
+  1. **shadow-clip** — depth shadows live inside the Card footprint
+  2. **truncation** — single-line text `numberOfLines={1}`, never wraps mid-chip
+  3. **fusion** — vertical rhythm keeps adjacent cards/dividers from fusing
+  4. **strays** — every card, tile and chip is a shared primitive; no orphan borders
+  5. **spacing** — gaps come from the `Spacing` scale, not magic numbers
+  6. **rotation** — text stays horizontal; no 90°/180°-rotated labels
+  7. **grid-clip** — grid rows/scenes must fit the narrowest supported width
+- **Restraint rules** (current conventions): tree rows are **border-only at every depth**
+  (no depth shadow on nested lists); project/task surfaces are **neutral** (`bgElevated`) —
+  accent is a signal (progress, selection, data), never a wash.
 
-### Apps and Packages
+## Screen migration status
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+All migration converts screens off legacy style objects / `ClaySurface` (soft shadow +
+per-screen borders) onto the tiered `Card` + shared primitives above.
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+| Area | Screen(s) | Status |
+| --- | --- | --- |
+| Routine / Home | `HomeScreen` | ✅ Migrated |
+| Calendar | `CalendarScreen` | ✅ Migrated |
+| Projects (list) | `ProjectsScreen` | ✅ Migrated |
+| Project detail | `ProjectDetailScreen` | ✅ Migrated |
+| To Do | `TasksScreen` | ⏳ Pending |
+| Profile + settings | `ProfileScreen`, `settings/*` | ⏳ Pending |
+| Book detail | `BookDetailScreen` | ⏳ Pending |
+| Legacy harness | `ClaySurface`, `MorphCheckbox`, `BookEntry`, `RoutineForm`, `TaskForm`, `MainTabs` | Retired as the last consumer migrates |
 
-### Utilities
+Remaining `ClaySurface` consumers: `TasksScreen`, `ProfileScreen`, `BookDetailScreen`,
+`settings/*`, `MainTabs`. Auth screens (`LoginScreen`, `SignupScreen`,
+`ForgotPasswordScreen`) use the legacy `../components` Button/Input and are out of the
+migration scope.
 
-This Turborepo has some additional tools already setup for you:
+## Getting started
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo build
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo build
-pnpm dlx turbo build
-pnpm exec turbo build
-```
-
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo build --filter=docs
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo dev
-```
-
-Without global `turbo`, use your package manager:
+Node >= 18, pnpm >= 9 and Turbo are required.
 
 ```sh
-cd my-turborepo
-npx turbo dev
-pnpm exec turbo dev
-pnpm exec turbo dev
+pnpm install           # install at the workspace root
+pnpm build             # build all apps/packages (turbo)
+pnpm check-types       # tsc --noEmit across the repo
 ```
 
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
+### Mobile
 
 ```sh
-turbo dev --filter=web
+cd apps/mobile
+npx expo start         # dev server (or pnpm --filter=@trax/mobile start)
+npx expo run:android   # or :ios
 ```
 
-Without global `turbo`:
+**Validation before committing mobile changes** (from `apps/mobile`):
 
 ```sh
-npx turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
+npx tsc --noEmit                       # types
+npx eslint src/<changed files>         # lint (baseline: HomeScreen ~0 errors)
+npx expo export --platform android     # bundler smoke test → "Exported: dist"
 ```
 
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
+### Desktop
 
 ```sh
-cd my-turborepo
-turbo login
+pnpm --filter=desktop dev              # tauri dev (Vite for the web shell)
 ```
 
-Without global `turbo`, use your package manager:
+### Core tests
 
 ```sh
-cd my-turborepo
-npx turbo login
-pnpm exec turbo login
-pnpm exec turbo login
+pnpm --filter=@trax/core test          # vitest
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+## Repository notes
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo link
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo link
-pnpm exec turbo link
-pnpm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+- **`apps/mobile` is its own git repository** (tracked as a submodule gitlink, no
+  `.gitmodules` file). Workflow: commit inside `apps/mobile` first, then from the repo
+  root `git add apps/mobile && git commit` to bump the pointer.
+  - ⚠️ `apps/mobile/src/components/ProgressRing.tsx` holds an uncommitted WIP experiment
+    (a `top`-offset/scale hack). Do not sweep it into commits with `git add -A` — stage
+    explicit files only.
+- Fonts load behind a gate in `App.tsx` (`useFonts`) — screens mount post-load, no FOUT.
