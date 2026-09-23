@@ -20,5 +20,5 @@ export function quoteOfTheDay(dateISO: string): { text: string; author: string }
   const d = new Date(dateISO.length === 10 ? `${dateISO}T12:00:00` : dateISO);
   const start = new Date(d.getFullYear(), 0, 0);
   const dayOfYear = Math.floor((d.getTime() - start.getTime()) / 86400000);
-  return QUOTES[((dayOfYear % QUOTES.length) + QUOTES.length) % QUOTES.length];
+  return QUOTES[((dayOfYear % QUOTES.length) + QUOTES.length) % QUOTES.length]!;
 }

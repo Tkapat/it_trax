@@ -50,11 +50,32 @@ begin
 end;
 $$;
 
--- 6. Optional hardening against future duplicate category rows
--- (the source of the "Personal twice" picker bug — dedupe is also
--- enforced client-side in RoutineForm).
--- NOTE: delete existing duplicates FIRST (see bug-fix report), or the
--- unique indexes below will fail to build.
+-- 6. Dedupe category rows first, then create unique indexes.
+-- Keep the row with the smallest id (oldest); delete the rest.
+-- routine_categories
+with dupes as (
+  select id,
+         row_number() over (
+           partition by user_id, lower(name)
+           order by created_at asc, id asc
+         ) as rn
+  from public.routine_categories
+)
+delete from public.routine_categories
+ where id in (select id from dupes where rn > 1);
+
+-- project_categories
+with dupes as (
+  select id,
+         row_number() over (
+           partition by user_id, lower(name)
+           order by created_at asc, id asc
+         ) as rn
+  from public.project_categories
+)
+delete from public.project_categories
+ where id in (select id from dupes where rn > 1);
+
 create unique index if not exists routine_categories_user_name_uniq
   on public.routine_categories (user_id, lower(name));
 create unique index if not exists project_categories_user_name_uniq

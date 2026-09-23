@@ -16,5 +16,8 @@
   "packageManager": "pnpm@9.0.0",
   "engines": {
     "node": ">=18"
+  },
+  "overrides": {
+    "hermes-compiler": "250829098.0.19"
   }
 }

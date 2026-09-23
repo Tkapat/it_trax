@@ -10,32 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "14.17"
-  }
-  graphql_public: {
-    Tables: {
-      [_ in never]: never
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      graphql: {
-        Args: {
-          extensions?: Json
-          operationName?: string
-          query?: string
-          variables?: Json
-        }
-        Returns: Json
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
+    PostgrestVersion: "14.5"
   }
   public: {
     Tables: {
@@ -187,10 +162,43 @@ export type Database = {
           },
         ]
       }
-      profiles: {
+      github_connections: {
         Row: {
           avatar_url: string | null
+          connected_at: string
+          encrypted_token: string
+          github_user_id: number | null
+          github_username: string
+          refresh_token: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          connected_at?: string
+          encrypted_token: string
+          github_user_id?: number | null
+          github_username: string
+          refresh_token?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          connected_at?: string
+          encrypted_token?: string
+          github_user_id?: number | null
+          github_username?: string
+          refresh_token?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
           accent_theme: string
+          avatar_url: string | null
           created_at: string
           full_name: string | null
           id: string
@@ -200,8 +208,8 @@ export type Database = {
           username: string
         }
         Insert: {
-          avatar_url?: string | null
           accent_theme?: string
+          avatar_url?: string | null
           created_at?: string
           full_name?: string | null
           id: string
@@ -211,8 +219,8 @@ export type Database = {
           username: string
         }
         Update: {
-          avatar_url?: string | null
           accent_theme?: string
+          avatar_url?: string | null
           created_at?: string
           full_name?: string | null
           id?: string
@@ -428,6 +436,8 @@ export type Database = {
           category_id: string | null
           created_at: string
           description: string | null
+          github_default_branch: string | null
+          github_repo: string | null
           github_url: string | null
           icon: string | null
           id: string
@@ -435,7 +445,7 @@ export type Database = {
           name: string
           repo_url: string | null
           started_at: string | null
-          status: 'in_progress' | 'on_track' | 'at_risk' | 'completed'
+          status: string
           target_date: string | null
           updated_at: string
           user_id: string
@@ -444,6 +454,8 @@ export type Database = {
           category_id?: string | null
           created_at?: string
           description?: string | null
+          github_default_branch?: string | null
+          github_repo?: string | null
           github_url?: string | null
           icon?: string | null
           id?: string
@@ -451,7 +463,7 @@ export type Database = {
           name: string
           repo_url?: string | null
           started_at?: string | null
-          status?: 'in_progress' | 'on_track' | 'at_risk' | 'completed'
+          status?: string
           target_date?: string | null
           updated_at?: string
           user_id: string
@@ -460,6 +472,8 @@ export type Database = {
           category_id?: string | null
           created_at?: string
           description?: string | null
+          github_default_branch?: string | null
+          github_repo?: string | null
           github_url?: string | null
           icon?: string | null
           id?: string
@@ -467,7 +481,7 @@ export type Database = {
           name?: string
           repo_url?: string | null
           started_at?: string | null
-          status?: 'in_progress' | 'on_track' | 'at_risk' | 'completed'
+          status?: string
           target_date?: string | null
           updated_at?: string
           user_id?: string
@@ -955,6 +969,17 @@ export type Database = {
       }
     }
     Functions: {
+      clear_github_connection: { Args: never; Returns: undefined }
+      get_github_connection_info: {
+        Args: never
+        Returns: {
+          avatar_url: string
+          connected_at: string
+          github_user_id: number
+          github_username: string
+        }[]
+      }
+      get_github_token: { Args: never; Returns: string }
       get_heatmap_range: {
         Args: { end_date: string; start_date: string }
         Returns: {
@@ -977,6 +1002,16 @@ export type Database = {
       }
       recalculate_streak: {
         Args: { p_routine_id: string; p_user_id: string }
+        Returns: undefined
+      }
+      set_github_connection: {
+        Args: {
+          p_access_token: string
+          p_avatar_url?: string
+          p_refresh_token: string
+          p_user_id_gh?: number
+          p_username: string
+        }
         Returns: undefined
       }
       show_limit: { Args: never; Returns: number }
@@ -1008,12 +1043,12 @@ export type Tables<
   DefaultSchemaTableNameOrOptions extends
     | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
         DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -1037,11 +1072,11 @@ export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -1062,11 +1097,11 @@ export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -1087,11 +1122,11 @@ export type Enums<
   DefaultSchemaEnumNameOrOptions extends
     | keyof DefaultSchema["Enums"]
     | { schema: keyof DatabaseWithoutInternals },
-  EnumName extends DefaultSchemaEnumNameOrOptions extends {
+  EnumName extends (DefaultSchemaEnumNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaEnumNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -1104,11 +1139,11 @@ export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
     | keyof DefaultSchema["CompositeTypes"]
     | { schema: keyof DatabaseWithoutInternals },
-  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+  CompositeTypeName extends (PublicCompositeTypeNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
-    : never = never,
+    : never) = never,
 > = PublicCompositeTypeNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -1118,9 +1153,6 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
-  graphql_public: {
-    Enums: {},
-  },
   public: {
     Enums: {
       project_status: ["active", "paused", "completed", "archived"],

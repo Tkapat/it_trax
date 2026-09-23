@@ -60,6 +60,58 @@ export type ProjectLink      = Database["public"]["Tables"]["project_links"]["Ro
 export type Todo             = Database["public"]["Tables"]["todos"]["Row"];
 export type Reminder         = Database["public"]["Tables"]["reminders"]["Row"];
 
+// --- GitHub integration (migration 0013/0014) ---
+export type GithubConnection = Database["public"]["Tables"]["github_connections"]["Row"];
+
+// ---------------------------------------------------------------------------
+// GitHub API types (not in DB — used by utils/githubApi.ts)
+// ---------------------------------------------------------------------------
+
+/** A GitHub repo as returned by GET /user/repos */
+export type GithubRepo = {
+  id: number;
+  full_name: string;          // "owner/repo"
+  name: string;
+  owner: { login: string; avatar_url: string };
+  description: string | null;
+  private: boolean;
+  default_branch: string;
+  pushed_at: string | null;
+  language: string | null;
+  stargazers_count: number;
+  html_url: string;
+};
+
+/** A file/directory entry from GET /repos/{owner}/{repo}/contents/{path} */
+export type GithubTreeEntry = {
+  name: string;
+  path: string;
+  type: 'file' | 'dir' | 'symlink' | 'submodule';
+  size: number;
+  sha: string;
+  url: string;
+  download_url: string | null;
+};
+
+/** A file's content response from GET /repos/{owner}/{repo}/contents/{path} */
+export type GithubFileContent = {
+  name: string;
+  path: string;
+  size: number;
+  encoding: 'base64';
+  content: string;            // base64-encoded file content
+  sha: string;
+};
+
+/** GitHub contribution day from the GraphQL contributionsByDate */
+export type GithubContributionDay = {
+  date: string;               // "YYYY-MM-DD"
+  contributionCount: number;
+};
+
+/** Connection info returned by get_github_connection_info() RPC */
+export type GithubConnectionInfo = Database["public"]["Functions"]["get_github_connection_info"]["Returns"][number];
+
 // ---------------------------------------------------------------------------
 // Insert type aliases — what you pass to INSERT
 // ---------------------------------------------------------------------------

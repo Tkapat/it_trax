@@ -7,11 +7,20 @@
 alter table public.profiles
   add column if not exists accent_theme text not null default 'amber';
 
-create constraint if not exists profiles_accent_theme_check
-  on public.profiles
-  check (
-    accent_theme in ('amber','crimson','emerald','sapphire','violet','rose','cyan')
-  );
+do $$
+begin
+  if not exists (
+    select 1 from information_schema.table_constraints
+     where table_schema = 'public'
+       and table_name   = 'profiles'
+       and constraint_name = 'profiles_accent_theme_check'
+  ) then
+    alter table public.profiles
+      add constraint profiles_accent_theme_check
+        check (accent_theme in ('amber','crimson','emerald','sapphire','violet','rose','cyan'));
+  end if;
+end;
+$$;
 
 -- Update the auto-create profile function to include accent_theme.
 create or replace function public.handle_new_user()
